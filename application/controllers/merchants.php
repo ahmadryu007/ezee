@@ -17,7 +17,12 @@
 		}
 
 		function addMerchant(){
+
 			// blablablabla
+		}
+		
+		function conflictTest(){
+			// something new inside here
 		}
 
 		function index($offset=0, $order_column='MerchantID', $order_type='asc'){
