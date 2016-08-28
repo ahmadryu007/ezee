@@ -15,6 +15,8 @@
 				redirect('main');
 			}
 		}
+		fuction test(){
+		}
 
 		function index($offset=0, $order_column='MerchantID', $order_type='asc'){
 			if(!empty($this->input->post('limit')))
