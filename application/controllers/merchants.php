@@ -16,6 +16,10 @@
 			}
 		}
 
+		function addMerchant(){
+			// blablablabla
+		}
+
 		function index($offset=0, $order_column='MerchantID', $order_type='asc'){
 			if(!empty($this->input->post('limit')))
 				$this->limit = $this->input->post('limit');
