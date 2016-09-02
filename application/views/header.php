@@ -17,8 +17,6 @@
   <link rel="stylesheet" href="<?php echo $base_url; ?>dist/css/skins/_all-skins.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo $base_url; ?>plugins/iCheck/flat/blue.css">
-  <!-- Morris chart -->
-  <link rel="stylesheet" href="<?php echo $base_url; ?>plugins/morris/morris.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?php echo $base_url; ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Date Picker -->
@@ -36,10 +34,11 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+<script src="<?php echo $base_url; ?>plugins/jQuery/jquery-2.2.3.min.js"></script>
+
 <script src="<?php echo $base_url; ?>bootstrap/js/bootstrap.min.js"></script>
-<!-- Morris.js charts -->
-<script src="<?php echo $base_url; ?>https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="<?php echo $base_url; ?>plugins/morris/morris.min.js"></script>
+
 <!-- Sparkline -->
 <script src="<?php echo $base_url; ?>plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->
@@ -105,8 +104,8 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  Ezeelink
+                  <small>2016</small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -191,6 +190,11 @@
         <li class="treeview">
           <a href="<?php echo $base_url;?>index.php/customers">
             <i class="fa fa-user"></i> <span>Data Pelanggan</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="<?php echo $base_url;?>index.php/cards">
+            <i class="fa fa-credit-card"></i> <span>Data Kartu</span>
           </a>
         </li>
         <li class="treeview">

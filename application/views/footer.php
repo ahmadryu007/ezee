@@ -44,9 +44,6 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo $base_url; ?>bootstrap/js/bootstrap.min.js"></script>
-<!-- Morris.js charts -->
-<script src="<?php echo $base_url; ?>https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="<?php echo $base_url; ?>plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="<?php echo $base_url; ?>plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->

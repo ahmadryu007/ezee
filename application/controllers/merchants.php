@@ -16,10 +16,6 @@
 			}
 		}
 
-		function addMerchant(){
-			// blablablabla
-		}
-
 		function index($offset=0, $order_column='MerchantID', $order_type='asc'){
 			if(!empty($this->input->post('limit')))
 				$this->limit = $this->input->post('limit');
@@ -75,17 +71,20 @@
 					++$i, $m->Nama, $m->Alamat,
 					$m->TanggalDaftar, $m->Kota, $m->Telepon, 
 					'<a href="'.$this->config->item('base_url').'index.php/merchants/profileMerchant/'.$m->MerchantID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
-					'<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
+					'<a href="'.$this->config->item('base_url').'index.php/merchants/update/'.$m->MerchantID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('merchants/delete/'.$m->MerchantID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Merchant Ini ?')"))
 					);
 			}
 			
 
 			$data['table'] = $this->table->generate();
+
 			if ($this->uri->segment(3) == 'delete_success')
 				$data['message'] = 'Data Berhasil Dihapus';
 			else if ($this->uri->segment(3) == 'add_success')
 				$data['message'] = 'Data Berhasil Ditambah';
+			else if ($this->uri->segment(3) == 'update_success')
+				$data['message'] = 'Data Berhasil Diupdate';
 			else
 				$data['message'] = '';
 
@@ -169,5 +168,69 @@
 			$this->load->view('admin_ezeelink/profileMerchant', $data);
 			$this->load->view('footer', $data);
 		}
+
+		function addMerchant(){
+			$data['base_url'] = $this->config->item('base_url');
+
+			$sql = "select * from kategori_merchant";
+			$kategori = $this->db->query($sql)->result();
+			$data['kategori'] = $kategori;
+
+			$this->load->view('header', $data);
+			$this->load->view('admin_ezeelink/addMerchant');
+			$this->load->view('footer', $data);
+		}
+
+		function addSubmit(){
+			$data = array(
+				'MerchantID' => $this->input->post('MerchantID'),
+				'Nama' => $this->input->post('NamaMerchant'),
+				'KategoriID' => $this->input->post('KategoriID'),
+				'Alamat' => $this->input->post('Alamat'),
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'),
+				'Negara' => $this->input->post('Negara'),
+				'Telepon' => $this->input->post('Telepon'),
+				'Alamat' => $this->input->post('Alamat'),
+				'TanggalDaftar' => $this->input->post('TanggalDaftar'),
+				'Catatan' => $this->input->post('Catatan')
+				);
+			$this->mMerchant->save($data);
+			header("location:".$this->config->item('base_url')."index.php/merchants/index/add_success");
+		}
+
+		function delete($id){
+			$this->mMerchant->delete($id);
+			redirect('merchants/index/delete_success','refresh');
+		}
+
+		function update($id){
+			$data['base_url'] = $this->config->item('base_url');
+
+			$data['merchant'] = $this->mMerchant->get_by_id($id)->row();
+
+			$this->load->view('header', $data);
+			$this->load->view('admin_ezeelink/updateMerchant');
+			$this->load->view('footer', $data);
+		}
+
+		function updateSubmit($id){
+			$data = array(
+				'MerchantID' => $this->input->post('MerchantID'),
+				'Nama' => $this->input->post('NamaMerchant'),
+				'KategoriID' => $this->input->post('KategoriID'),
+				'Alamat' => $this->input->post('Alamat'),
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'),
+				'Negara' => $this->input->post('Negara'),
+				'Telepon' => $this->input->post('Telepon'),
+				'Alamat' => $this->input->post('Alamat'),
+				'TanggalDaftar' => $this->input->post('TanggalDaftar'),
+				'Catatan' => $this->input->post('Catatan')
+				);
+			$this->mMerchant->update($id, $data);
+			redirect('merchants/index/update_success', 'refresh');
+		}
+
 	}
 ?>	

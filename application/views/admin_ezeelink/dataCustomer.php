@@ -77,7 +77,8 @@
 
       <div class="row">
         <div class="col-md-3">
-          <a href="#analisis" class="btn btn-default">Analisis Data Pelanggan</a>
+          <a href="#analisis" class="btn btn-default">Analisis Data Pelanggan</a>&nbsp;&nbsp;&nbsp;
+          <a href="<?php echo $base_url;?>index.php/customers/addCustomer" class="btn btn-warning">Tambah Data</a>
         </div>
       </div>
 
@@ -122,10 +123,10 @@
               <br />
               <form action="<?php echo $base_url;?>index.php/customers/download_pdf" method="get">
                 <div class="col-md-6">
-                  <input type="submit" id="import" class="btn btn-warnig" value="Import Data yang Dipilih Ke File PDF">
+                  <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
                   <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
                   <a href="<?php echo $base_url;?>index.php/customers/download_csv" class="btn btn-info">
-                    <i class="fa fa-file-excel-o">&nbsp;&nbsp;Import Semua Data Ke File .XLS</i>
+                    <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
                   </a>
                 </div>
                 </form>

@@ -25,6 +25,16 @@
 			return $this->db->query($sql);
 		}
 
+		function save($merchant){
+			$this->db->insert($this->table_name, $merchant);
+			return $this->db->insert_id();
+		}
+
+		function update($id, $merchant){
+			$this->db->where($this->primary_key, $id);
+			$this->db->update($this->table_name, $merchant);
+		}
+
 		function get_by_id($id){
 			$sql = "select kategori_merchant.Nama as Kategori, merchant.* 
 					from kategori_merchant, merchant 

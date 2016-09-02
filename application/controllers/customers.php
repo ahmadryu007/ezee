@@ -74,7 +74,7 @@
 					++$i, $customer->CompanyName, $customer->Nama,
 					$customer->Alamat, $customer->Kota,
 					'<a href="'.$this->config->item('base_url').'index.php/customers/profileCustomer/'.$customer->PelangganID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
-					'<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
+					'<a href="'.$this->config->item('base_url').'index.php/customers/updateCustomer/'.$customer->PelangganID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('customers/delete/'.$customer->PelangganID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Customers Ini ?')"))
 					);
 			}
@@ -86,6 +86,8 @@
 				$data['message'] = 'Data Berhasil Dihapus';
 			else if ($this->uri->segment(3) == 'add_success')
 				$data['message'] = 'Data Berhasil Ditambah';
+			else if ($this->uri->segment(3) == 'update_success')
+				$data['message'] = 'Data Berhasil Diupdate';
 			else
 				$data['message'] = '';
 
@@ -176,7 +178,7 @@
 
 		function delete($id){
 			$this->mCustomer->delete($id);
-			redirect('customer/index/delete_success', 'refresh');
+			redirect('customers/index/delete_success', 'refresh');
 		}
 
 		function profileCustomer($id){
@@ -218,6 +220,57 @@
 			$this->load->view('admin_ezeelink/profileCustomer', $data);
 			$this->load->view('footer', $data);
 
+		}
+
+		function addCustomer(){
+			$data['base_url'] = $this->config->item('base_url');
+
+			$this->load->view('header', $data);
+			$this->load->view('admin_ezeelink/addCustomer', $data);
+			$this->load->view('footer', $data);
+		}
+
+		function addSubmit(){
+			$data = array(
+				'PelangganID' => $this->input->post('PelangganID'),
+				'Nama' => $this->input->post('Nama'),
+				'Pekerjaan' => $this->input->post('Pekerjaan'),
+				'Alamat' => $this->input->post('Alamat'),
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'),
+				'Negara' => $this->input->post('Negara'),
+				'Telepon' => $this->input->post('Telepon'),
+				'Email' => $this->input->post('Email'),
+				'TanggalLahir' => $this->input->post('TanggalLahir')
+				);
+			$this->mCustomer->save($data);
+			redirect('customers/index/add_success','refresh');
+		}
+
+		function updateCustomer($id){
+			$data['base_url'] = $this->config->item('base_url');
+			$data['customer'] = $this->mCustomer->get_by_id($id)->row();
+
+			$this->load->view('header', $data);
+			$this->load->view('admin_ezeelink/updateCustomer', $data);
+			$this->load->view('footer', $data);
+		}
+
+		function updateSubmit($id){
+			$data = array(
+				'PelangganID' => $this->input->post('PelangganID'),
+				'Nama' => $this->input->post('Nama'),
+				'Pekerjaan' => $this->input->post('Pekerjaan'),
+				'Alamat' => $this->input->post('Alamat'),
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'),
+				'Negara' => $this->input->post('Negara'),
+				'Telepon' => $this->input->post('Telepon'),
+				'Email' => $this->input->post('Email'),
+				'TanggalLahir' => $this->input->post('TanggalLahir')
+				);
+			$this->mCustomer->update($id, $data);
+			redirect('customers/index/update_success','refresh');	
 		}
 	}
 ?>
