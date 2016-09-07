@@ -74,11 +74,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'crm_ezeelink',
+	'dsn'	=> 'ezeecrm',
 	'hostname' => '(local)',
 	'username' => '',
 	'password' => '',
-	'database' => 'crm_ezeelink',
+	'database' => 'ezeecrm',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

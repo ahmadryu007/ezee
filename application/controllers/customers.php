@@ -63,7 +63,6 @@
 			$this->table->set_empty(" ");
 			$new_order = ($order_type=='asc'?'desc':'asc');
 			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">','No',
-				anchor('customers/index/'.$offset.'/CompanyName/'.$new_order,'CompanyName'),
 				anchor('customers/index/'.$offset.'/Nama/'.$new_order,'Nama'),
 				anchor('customers/index/'.$offset.'/Alamat/'.$new_order,'Alamat'),
 				anchor('customers/index/'.$offset.'/Kota/'.$new_order,'Kota'),
@@ -71,7 +70,7 @@
 			$i=0 + $offset;
 			foreach ($customers as $customer) {
 				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$customer->PelangganID.'" onchange="cek()">', 
-					++$i, $customer->CompanyName, $customer->Nama,
+					++$i, $customer->Nama,
 					$customer->Alamat, $customer->Kota,
 					'<a href="'.$this->config->item('base_url').'index.php/customers/profileCustomer/'.$customer->PelangganID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
 					'<a href="'.$this->config->item('base_url').'index.php/customers/updateCustomer/'.$customer->PelangganID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -93,25 +92,7 @@
 
 			$data['jumlahCust'] = $this->mCustomer->count_all();
 
-			// data untuk chart analisis pekerjaan customer
-			// -----------------------------------------------
-			$contactTitle = $this->mCustomer->get_dataPekerjaan()->result();
-			$groupContactTitle = $this->mCustomer->get_groupPekerjaan()->result();
-
-			$dataContactTitle = array();
-			$dataGroupContactTitle = array();
-			foreach($contactTitle as $c){
-				$dataContactTitle[] = $c->Pekerjaan;
-			}
 			
-			foreach ($groupContactTitle as $d) {
-				$dataGroupContactTitle[] = $d->Jumlah;
-			}
-
-			$data['contactTitle'] = json_encode($dataContactTitle);
-			$data['groupContactTitle'] = json_encode($dataGroupContactTitle);
-			//-------------------------------------------------
-
 
 			// data untuk analisis kota customer
 			// ------------------------------------------------
@@ -134,6 +115,15 @@
 			$data['groupUmur'] = $this->mCustomer->get_groupUmur()->result();
 			// ---------------------------------------------
 
+			// data jumlah customer pria
+			// ---------------------------------------------
+			$data['customerPria'] = $this->mCustomer->get_customerPria();
+			// ---------------------------------------------
+
+			// data jumlah customer wanita
+			// ---------------------------------------------
+			$data['customerWanita'] = $this->mCustomer->get_customerWanita();
+			// ---------------------------------------------
 
 			$this->load->view('header',$data);
 			$this->load->view('admin_ezeelink/dataCustomer', $data);
@@ -198,11 +188,14 @@
 
 
 			$this->table->set_empty(" ");
-			$this->table->set_heading('No','Nama Merchant', 'Diskon','Tempat','Tanggal');
+			$this->table->set_heading(' ','No Kartu','Tanggal', 'Jumlah Bayar(Rp.)','Nama Produk','Tempat', 'Merchant');
 			$i=0;
 			foreach ($customerOrders as $c) {
-				$this->table->add_row(++$i, $c->Nama,
-					$c->Diskon, $c->TempatTransaksi, $c->TanggalTransaksi
+				$jumlah = $c->HargaPerUnit * $c->Kuantitas;
+				$jumlahBayar = $jumlah - ($jumlah * $c->Diskon);
+				$this->table->add_row(++$i, $c->NoKartu,
+					$c->TanggalTransaksi, $jumlahBayar , $c->NamaProduk,
+					$c->Alamat.', '.$c->Kota , $c->NamaMerchant 
 					);
 			}
 
@@ -210,7 +203,7 @@
 			// =================================================
 
 			// data banyaknya transaksi customer per merchant 
-			$data['customerMerchant'] = $this->mCustomer->get_pelangganMerchant($id)->result();
+			//$data['customerMerchant'] = $this->mCustomer->get_pelangganMerchant($id)->result();
 			// =================================================
 
 			$data['jumlahTransaksi'] = $i;
@@ -224,6 +217,7 @@
 
 		function addCustomer(){
 			$data['base_url'] = $this->config->item('base_url');
+			$data['newID'] = $this->mCustomer->count_all() + 1;
 
 			$this->load->view('header', $data);
 			$this->load->view('admin_ezeelink/addCustomer', $data);
@@ -232,9 +226,8 @@
 
 		function addSubmit(){
 			$data = array(
-				'PelangganID' => $this->input->post('PelangganID'),
 				'Nama' => $this->input->post('Nama'),
-				'Pekerjaan' => $this->input->post('Pekerjaan'),
+				'JenisKelamin' => $this->input->post('JenisKelamin'),
 				'Alamat' => $this->input->post('Alamat'),
 				'Kota' => $this->input->post('Kota'),
 				'Provinsi' => $this->input->post('Provinsi'),
@@ -258,9 +251,8 @@
 
 		function updateSubmit($id){
 			$data = array(
-				'PelangganID' => $this->input->post('PelangganID'),
 				'Nama' => $this->input->post('Nama'),
-				'Pekerjaan' => $this->input->post('Pekerjaan'),
+				'JenisKelamin' => $this->input->post('JenisKelamin'),
 				'Alamat' => $this->input->post('Alamat'),
 				'Kota' => $this->input->post('Kota'),
 				'Provinsi' => $this->input->post('Provinsi'),

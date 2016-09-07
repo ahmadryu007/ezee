@@ -51,7 +51,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Jumlah </span>
               <span class="info-box-text">Pelanggan Pria</span>
-              <span class="info-box-number">41</span>
+              <span class="info-box-number"><?php echo $customerPria; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -65,7 +65,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Jumlah </span>
               <span class="info-box-text">Pelanggan Wanita </span>
-              <span class="info-box-number">50</span>
+              <span class="info-box-number"><?php echo $customerWanita; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -136,7 +136,7 @@
                       <select name="limit">
                         <option value="10">10</option>
                         <option value="20">20</option>
-                        <option value="99999999">Semua</option>
+                        <option value="9999999999999">Semua</option>
                       </select>
                     <label>Data</label>
                     <input type="submit" class="btn btn-default" value="Ok">
@@ -197,51 +197,6 @@
         <script type="text/javascript" src="<?php echo $base_url;?>assets/Chart.js"></script>
 
         <div class="col-md-6" id="analisis">
-
-          <!-- BAR CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Analisis Data Pekerjaan Pelanggan</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="demoChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            </div>
-          <!-- /.box -->
-
-
-        </div>
-
-        <!-- /.col (LEFT) -->
-        <div class="col-md-6">
-          <!-- LINE CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Analisis Data Transaksi Pelanggan</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="testChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            </div>
-          <!-- /.box -->  
-        </div>
-          <!-- /.box -->
-
-        <div class="col-md-6">
           <!-- PIE CHART -->
           <div class="box box-info">
             <div class="box-header with-border">
@@ -268,7 +223,7 @@
           <!-- BAR CHART -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Chart Analisis Rating Pelanggan</h3>
+              <h3 class="box-title">Analisis Rating Pelanggan</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -319,46 +274,7 @@
         <script type="text/javascript">
               $(document).ready(function(){
 
-                  // bar chart data pekerjaan
-                  var data = {
-                      labels: <?php echo $contactTitle; ?>,
-                      datasets: [
-                          {
-                              fillColor:  "rgba(220,220,220,0.2)",
-                              strokeColor: "rgba(220,220,220,1)",
-                              pointColor:  "rgba(220,220,220,1)",
-                              pointStrokeColor: "#FFF",
-                              pointHighlightFill: "#FFF",
-                              pointHighlightStroke: "rgba(220,220,220,1)",
-                              data: <?php echo $groupContactTitle; ?> }
-                      ]
-                  };
-
-                  var ctx = document.getElementById("demoChart").getContext("2d");
-                  var chart = new Chart(ctx).Bar(data);
-
-                  // =============================================================
-                  // line chart data transaksi pelanggan
-                  var data2 = {
-                            labels: ["January", "February", "March", "April", "May", "June", "July"],
-                            datasets: [
-                                {
-                                    label: "My First dataset",
-                                    fillColor: "rgba(220,220,220,0.2)",
-                                    strokeColor: "rgba(220,220,220,1)",
-                                    pointColor: "rgba(220,220,220,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(220,220,220,1)",
-                                    data: [65, 59, 80, 81, 56, 55, 40]
-                                }
-                            ]
-                        };
-
-                  var ctx2 = document.getElementById("testChart").getContext("2d");
-                  var chart2 = new Chart(ctx2).Line(data2);
-
-                  // ==============================================================
+                
                   // pie chart data kota pelanggan
 
                   var data4 = [ <?php
@@ -441,9 +357,8 @@
                   legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span><br /><%}%></ul>"
                 });
                 document.getElementById("umurLegend").innerHTML = chart6.generateLegend();
-
-
               });
+              
         </script>
 
     <div class="col-sm-9">

@@ -2,25 +2,23 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Data Kartu
-        <small>ezeelink</small>
+        Toko
+        <small>Merchant</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Data Kartu</a></li>
+        <li><a href="#">Data Toko</a></li>
       </ol>
     </section>
-
-    <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-credit-card"></i></span>
+            <span class="info-box-icon bg-gray"><i class="fa fa-institution"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Jumlah Kartu</span>
-              <span class="info-box-number"><?php echo $jumlahKartu; ?></span>
+              <span class="info-box-text">Jumlah Toko</span>
+              <span class="info-box-number"><?php echo $jumlahToko; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -32,9 +30,9 @@
             <span class="info-box-icon bg-aqua"><i class="fa fa-flag-checkered"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Jumlah Flag Aktiv </span>
-              <span class="info-box-text">True</span>
-              <span class="info-box-number"><?php echo $flagAktivTrue; ?></span>
+              <span class="info-box-text">Kota Dengan Toko </span>
+              <span class="info-box-text">Terbanyak</span>
+              <span class="info-box-number"></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -43,11 +41,11 @@
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-flag-o"></i></span>
+            <span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
             <div class="info-box-content">
-              <span class="info-box-text">Jumlah Flag Active</span>
-              <span class="info-box-text">False</span>
-              <span class="info-box-number"><?php echo $flagAktivFalse; ?></span>
+              <span class="info-box-text">Toko Paling Banyak </span>
+              <span class="info-box-text">Transaksi</span>
+              <span class="info-box-number"></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -59,7 +57,7 @@
 
       <div class="row">
         <div class="col-md-3">
-          <a href="<?php echo $base_url;?>index.php/cards/addCard" class="btn btn-warning">Tambah Data</a>
+          <a href="<?php echo $base_url;?>index.php/merchantToko/addToko" class="btn btn-warning">Tambah Data</a>
         </div>
       </div>
 
@@ -70,16 +68,17 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Data Kartu</h3>
+              <h3 class="box-title">Data Toko</h3>
             </div>
             <!-- /.box-header -->
             
             <div class="box-body">
-            <form action="<?php echo $base_url;?>index.php/cards" method="post">
+            <form action="<?php echo $base_url;?>index.php/merchantToko" method="post">
               <label>Cari Berdasarkan</label>
               <select class="form-control" name="searchField">
-                <option value="NoKartu">No Kartu</option>
-                <option value="UserID">User ID</option>
+                <option value="TokoID">ID Toko</option>
+                <option value="Kota">Kota</option>
+                <option value="Almat">Alamat</option>
               </select>
               <br />
               <div class="input-group">
@@ -101,16 +100,16 @@
               </table> -->
               <label><?php echo $message; ?></label>
               <br />
-              <form action="<?php echo $base_url;?>index.php/cards/download_pdf" method="get">
+              <form action="<?php echo $base_url;?>index.php/merchantToko/download_pdf" method="get">
                 <div class="col-md-6">
                   <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
                   <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/cards/download_csv" class="btn btn-info">
+                  <a href="<?php echo $base_url;?>index.php/merchantToko/download_csv" class="btn btn-info">
                     <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
                   </a>
                 </div>
                 </form>
-                <form action="<?php echo $base_url;?>index.php/cards" method="post">
+                <form action="<?php echo $base_url;?>index.php/merchantToko" method="post">
                   <div class="col-md-6">
                     <label>Tampilkan Per</label>
                       <select name="limit">
@@ -173,6 +172,6 @@
         </div>
         <!-- /.col -->
         </div>
+      
     </section>
-    <!-- /.content -->
-  </div>
+</div>

@@ -46,8 +46,28 @@
 		}
 
 		function get_by_id($no){
-			$sql = "select * from ".$this->table_name." where ".$this->primary_key." = ".$no;
+			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$no."' ";
 			return $this->db->query($sql);
+		}
+
+		function get_idPelanggan(){ // mendapatkan semua data ID Pelanggan Untuk (Combobox)
+			$sql = "select PelangganID, Nama from pelanggan";
+			return $this->db->query($sql);
+		}
+
+		function get_idMerchant(){ // mendapatkan semua ID Merchant Untuk (Combobox)
+			$sql = "select MerchantID, Nama from merchant";
+			return $this->db->query($sql);
+		}
+
+		function get_aktivTrue(){ // mendapatkan jumlah kartu dengan flag aktiv true
+			$sql = "select COUNT(NoKartu) as Jumlah from kartu where FlagAktiv like 'T'";
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_aktivFalse(){ // mendapatkan jumlah kartu dengan flag aktiv false
+			$sql = "select COUNT(NoKartu) as Jumlah from kartu where FlagAktiv like 'F'";
+			return $this->db->query($sql)->row()->Jumlah;
 		}
 	}
 ?>

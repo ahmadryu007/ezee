@@ -30,7 +30,17 @@
               <div class="box-body">
                 <div class="form-group">
                   <label>User ID</label>
-                  <input type="text" class="form-control" name="UserId" placeholder="User ID">
+                  <input type="text" class="form-control" name="UserID" placeholder="User ID">
+                </div>
+                <div class="form-group">
+                  <label>ID Pelanggan</label>
+                  <select class="form-control" name="PelangganID">
+                  <?php
+                  foreach ($idPelanggan as $id) {
+                    echo '<option value="'.$id->PelangganID.'">'.$id->PelangganID.' || '.$id->Nama.'</option>';
+                  }
+                  ?>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label>No Kartu</label>
@@ -38,8 +48,22 @@
                 </div>
                 <div class="form-group">
                   <label>ID Merchant</label>
-                  <input type="text" class="form-control" name="MerchantID" placeholder="ID Merchant">
+                  <select class="form-control" name="MerchantID">
+                  <?php
+                  foreach ($idMerchant as $id) {
+                    echo '<option value="'.$id->MerchantID.'">'.$id->MerchantID.' || '.$id->Nama.'</option>';
+                  }
+                  ?>
+                  </select>
                 </div>
+
+                <div class="form-group">
+                  <input name="FlagMain" type="checkbox" value="T">&nbsp;&nbsp;<label>Flag Main</label>
+                </div>
+                <div class="form-group">
+                  <input name="FlagAktiv" type="checkbox" value="T">&nbsp;&nbsp;<label>Flag Aktiv</label>
+                </div>
+
                 <!-- Date -->
               <div class="form-group">
                 <label>Trans Date</label>

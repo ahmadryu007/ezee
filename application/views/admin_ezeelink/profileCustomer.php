@@ -26,10 +26,12 @@
               <div>
                 <p>
                 <?php
+                
                   echo $rating.'&nbsp;&nbsp;';
                   for ($i=0;$i<$rating;$i++){
                     echo '<span class="glyphicon glyphicon-star"></span>';
                   }
+                
                 ?>
                 </p>
               </div>
@@ -55,7 +57,7 @@
                 <div class="col-sm-4">
                   <div class="description-block">
                     <h5 class="description-header">Gender</h5>
-                    <span class="description-text">M</span>
+                    <span class="description-text"><?php echo $customer->JenisKelamin; ?></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
@@ -92,9 +94,6 @@
                 <div class="col-md-3 col-sm-4"><span class="fa fa-arrows">&nbsp;&nbsp;Tanggal Lahir</span></div>
                 <div class="col-md-3 col-sm-4"><?php echo $customer->TanggalLahir; ?></div>
                 <br />
-                <div class="col-md-3 col-sm-4"><span class="fa fa-user-secret">&nbsp;&nbsp;Pekerjaan</span></div>
-                <div class="col-md-3 col-sm-4"><?php echo $customer->Pekerjaan; ?></div>
-                <br />
                 <div class="col-md-3 col-sm-4"><span class="fa fa-at">&nbsp;&nbsp;Email</span></div>
                 <div class="col-md-3 col-sm-4"><?php echo $customer->Email; ?></div>
                 <br />
@@ -102,45 +101,9 @@
             </div>
           </div>
         </div>
-        <!-- /.col -->
-        
-        <div class="col-md-3">
-          <div class="box box-warning">
-            <div class="box-header with-border">
-              <h3 class="box-title">Jumlah Transaksi Per Merchant</h3>
+        <!-- /.col -->  
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <?php 
-                  foreach ($customerMerchant as $c) {
-                    echo '<div clas="row">';
-                    echo '<div class="col-md-3 col-sm-4">';
-                    echo $c->NamaMerchant;
-                    echo "</div>";
-
-                    echo '<div class="col-md-3 col-sm-4">';
-                    echo '<strong>';
-                    echo $c->Jumlah;
-                    echo '</strong>';
-                    echo "</div>";
-                    echo "</div>";
-                  }
-              ?>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-        
-
-        <div class="col-md-6">
+        <div class="col-md-9">
           <!-- AREA CHART -->
           <div class="box box-primary">
             <div class="box-header with-border">

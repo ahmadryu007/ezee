@@ -46,34 +46,30 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Alamat</label>
-                  <input type="text" class="form-control" name="Alamat" placeholder="Alamat">
+                  <label>Facebook</label>
+                  <input type="tel" class="form-control" name="AlamatFB" placeholder="Facebook">
                 </div>
                 <div class="form-group">
-                  <label>Kota</label>
-                  <input type="text" class="form-control" name="Kota" placeholder="Kota">
+                  <label>Twitter</label>
+                  <input type="tel" class="form-control" name="AlamatTW" placeholder="Twitter">
                 </div>
                 <div class="form-group">
-                  <label>Provinsi</label>
-                  <input type="text" class="form-control" name="Provinsi" placeholder="Provinsi">
+                  <label>Website</label>
+                  <input type="tel" class="form-control" name="AlamatWWW" placeholder="Website">
                 </div>
                 <div class="form-group">
-                  <label>Negara</label>
-                  <input type="text" class="form-control" name="Negara" placeholder="Negara">
-                </div>
-                <div class="form-group">
-                  <label>Telepon</label>
-                  <input type="tel" class="form-control" name="Telepon" placeholder="Telepon">
+                  <label>Tagline</label>
+                  <input type="tel" class="form-control" name="Tagline" placeholder="Tagline">
                 </div>
                 <!-- Date -->
               <div class="form-group">
-                <label>Tanggal Daftar</label>
+                <label>Tanggal Input</label>
 
                 <div class="input-group date">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" name="TanggalDaftar" class="form-control pull-right" id="datepicker">
+                  <input type="text" name="TanggalInput" class="form-control pull-right" id="datepicker" value="<?php echo date('d-m-Y'); ?>" disabled>
                 </div>
                 <!-- /.input group -->
               </div>
@@ -84,8 +80,8 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputFile">Logo</label>
-                  <input type="file" id="exampleInputFile">
+                  <label for="Logo">Logo</label>
+                  <input type="file" id="Logo">
 
                   <p class="help-block"></p>
                 </div>

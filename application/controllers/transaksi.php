@@ -57,19 +57,19 @@
 			$new_order = ($order_type=='asc'?'desc':'asc');
 			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">', 'No',
 				anchor('transaksi/index/'.$offset.'/TransaksiID/'.$new_order,'TransaksiID'),
-				anchor('transaksi/index/'.$offset.'/MerchantID/'.$new_order,'MerchantID'),
-				anchor('transaksi/index/'.$offset.'/PelangganID/'.$new_order,'PelangganID'),
-				anchor('transaksi/index/'.$offset.'/TanggalTransaksi/'.$new_order,'TanggalTransaksi'),
-				anchor('transaksi/index/'.$offset.'/Kota/'.$new_order,'Kota'),
-				anchor('transaksi/index/'.$offset.'/Provinsi/'.$new_order,'Provinsi'));
+				anchor('transaksi/index/'.$offset.'/TokoID/'.$new_order,'TokoID'),
+				anchor('transaksi/index/'.$offset.'/NoKartu/'.$new_order,'NoKartu'),
+				anchor('transaksi/index/'.$offset.'/TanggalTransaksi/'.$new_order,'TanggalTransaksi'));
 
 			$i=0 + $offset;
 			foreach ($paged_transaksi as $t) {
 				$this->table->add_row('<input type="checkbox" name="'.$i.'" value="'.$t->TransaksiID.'" onchange="cek()">', 
 					++$i, $t->TransaksiID, 
-					anchor($this->config->item('base_url').'index.php/merchants/profileMerchant/'.$t->MerchantID, $t->MerchantID), 
-					anchor($this->config->item('base_url').'index.php/customers/profileCustomer/'.$t->PelangganID, $t->PelangganID),
-					$t->TanggalTransaksi, $t->KotaTransaksi, $t->ProvinsiTransaksi);
+					$t->TokoID,
+					$t->NoKartu,
+					//anchor($this->config->item('base_url').'index.php/merchants/profileMerchant/'.$t->MerchantID, $t->MerchantID), 
+					//anchor($this->config->item('base_url').'index.php/customers/profileCustomer/'.$t->PelangganID, $t->PelangganID),
+					$t->TanggalTransaksi);
 			}
 
 			// ===================================================================
@@ -134,14 +134,15 @@
 
 			// ==================================================================
 			// data jumlah transaksi perkota
-			$data['kotaTransaksi'] = $this->mTransaksi->get_kotaTransaksi()->result();
+			//$data['kotaTransaksi'] = $this->mTransaksi->get_kotaTransaksi()->result();
 			// -------
 
 			// ==================================================================
 			// data kota dengan transaksi terbanyak
-			$data['highKota'] = $this->mTransaksi->get_kotaTransaksi()->first_row()->Nama;
+			//$data['highKota'] = $this->mTransaksi->get_kotaTransaksi()->first_row()->Nama;
 			// -------
 
+			/*
 			// ==================================================================
 			// data jumlah transaksi per kategori merchant (chart)
 			$transaksiKategoriMerchant = $this->mTransaksi->get_transaksiKategoriMerchant()->result();
@@ -160,7 +161,8 @@
 			$data['transaksiKategoriJumlah'] = json_encode($transaksiKategoriJumlah);
 
 			// ------
-
+			
+			*/
 
 			$data['table'] = $this->table->generate();
 

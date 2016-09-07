@@ -29,15 +29,11 @@
               <div class="box-body">
                 <div class="form-group">
                   <label>ID Pelanggan</label>
-                  <input type="text" class="form-control" name="PelangganID" value="<?php echo $customer->PelangganID;?>">
+                  <input type="text" class="form-control" name="PelangganID" value="<?php echo $customer->PelangganID;?>" disabled>
                 </div>
                 <div class="form-group">
                   <label>Nama Pelanggan</label>
                   <input type="text" class="form-control" name="Nama" value="<?php echo $customer->Nama;?>">
-                </div>
-                <div class="form-group">
-                  <label>Pekerjaan</label>
-                  <input type="text" class="form-control" name="Pekerjaan" value="<?php echo $customer->Pekerjaan;?>">
                 </div>
                 <div class="form-group">
                   <label>Alamat</label>
@@ -62,6 +58,13 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="email" class="form-control" name="Email" value="<?php echo $customer->Email;?>">
+                </div>
+                <div class="form-group">
+                  <label>Jenis Kelamin</label>
+                  <select class="form-control" name="JenisKelamin">
+                    <option value="m">Pria</option>
+                    <option value="f">Wanita</option>
+                  </select>
                 </div>
                 <!-- Date -->
               <div class="form-group">

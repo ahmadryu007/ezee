@@ -53,26 +53,33 @@
 		}
 
 		function get_merchantTransaksi($id){ // function untuk mendapatkan data histori transaksi di suatu merchant
-			$sql = "select [dbo].[pelanggan].[Nama] as namaCustomer, 
-					[dbo].[transaksi].[TempatTransaksi], [dbo].[transaksi_detail].[Diskon], [dbo].[transaksi_detail].[Kuantitas], 
-					[dbo].[transaksi].[TanggalTransaksi], [dbo].[produk].*
-					from [dbo].[transaksi], [dbo].[transaksi_detail], [dbo].[merchant], [dbo].[pelanggan], [dbo].[produk]
-					where [merchant].[MerchantID] = 4 and 
-					[transaksi].[MerchantID] = [merchant].[MerchantID] and
-					[transaksi].[TransaksiID] = [transaksi_detail].[TransaksiID] and 
-					[transaksi].[PelangganID] = [pelanggan].[PelangganID] and
-					[transaksi].[TransaksiID] = [transaksi_detail].[TransaksiID] and
-					[transaksi_detail].[ProdukID] = [produk].[ProdukID]
-					order by [dbo].[transaksi].[TanggalTransaksi] desc";
+			$sql = "select transaksi.NoKartu, transaksi.TanggalTransaksi,  
+					transaksi_detail.Kuantitas, transaksi_detail.Diskon, 
+					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.Nama as KategoriProduk, 
+					toko_merchant.Alamat, toko_merchant.Kota, 
+					pelanggan.Nama, toko_merchant.TokoID
+					from transaksi, transaksi_detail, produk, kategori_produk, toko_merchant, kartu, pelanggan, merchant
+					where transaksi.TransaksiID = transaksi_detail.TransaksiID and 
+					transaksi_detail.ProdukID = produk.ProdukID and 
+					produk.KategoriID = kategori_produk.KategoriID and 
+					transaksi.TokoID = toko_merchant.TokoID and 
+					transaksi.NoKartu = kartu.NoKartu and 
+					kartu.PelangganID = pelanggan.PelangganID and 
+					toko_merchant.MerchantID = merchant.MerchantID and 
+					merchant.MerchantID = ".$id." order by TanggalTransaksi desc";
+			return $this->db->query($sql);
+		}
+
+		function get_tokoMerchant($id){
+			$sql = "select * from toko_merchant where MerchantID=".$id." ";
 			return $this->db->query($sql);
 		}
 
 		function get_jumlahMerchantTransaksi(){ // function untuk mendapatkan jumlah transaksi merchant
-			$sql = "select merchant.Nama as namaMerchant, count(transaksi_detail.TransaksiID) as jumlahTransaksi 
-					from transaksi, transaksi_detail, merchant, pelanggan 
-					where pelanggan.PelangganID = transaksi.PelangganID and 
-					transaksi.MerchantID = merchant.MerchantID and 
-					transaksi.TransaksiID = transaksi_detail.TransaksiID 
+			$sql = "select merchant.Nama, COUNT(transaksi.TransaksiID) as jumlahTransaksi
+					from merchant, transaksi, toko_merchant 
+					where transaksi.TokoID = toko_merchant.TokoID and 
+					toko_merchant.MerchantID = merchant.MerchantID
 					group by merchant.Nama order by jumlahTransaksi desc";
 			return $this->db->query($sql);
 		}
@@ -92,8 +99,8 @@
 			return $indeksBintang;
 		}
 
-		function get_kota(){ // function untuk mendapatkan jumlah merchant per kota
-			$sql = "select Kota, count(MerchantID) as Jumlah from merchant group by Kota order by Jumlah desc";
+		function get_kotaMerchant(){ // function untuk mendapatkan jumlah toko merchant per kota
+			$sql = "select Kota, COUNT(Kota) as Jumlah from toko_merchant group by Kota order by Jumlah desc";
 			return $this->db->query($sql);
 		}
 
@@ -103,6 +110,16 @@
 					where merchant.KategoriID = kategori_merchant.KategoriID group by kategori_merchant.Nama 
 					order by Jumlah desc";
 			return $this->db->query($sql);
+		}
+
+		function get_merchantJakarta(){ // function untuk mendapatkan jumlah TOKO merchant di jakarta
+			$sql = "select COUNT(TokoID) as Jumlah from toko_merchant where Kota like '%jakarta%'";
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_merchantLuarJakarta(){ // function untuk mendapatkan jumlah TOKO merchant di luar jakarta
+			$sql = "select COUNT(TokoID) as Jumlah from toko_merchant where Kota not like '%jakarta%'";
+			return $this->db->query($sql)->row()->Jumlah;
 		}
 	}
 ?>

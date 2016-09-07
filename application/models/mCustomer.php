@@ -69,6 +69,7 @@
 			$sql = "SELECT COUNT(".$this->primary_key.") as Jumlah FROM ".$this->table_name." GROUP BY Pekerjaan";
 			return $this->db->query($sql);
 		}
+		// demo
 
 		function get_all_data(){
 			$sql = "select * from ".$this->table_name;
@@ -76,11 +77,20 @@
 		}
 
 		function get_transaksiPelanggan($id){ // mendapatkan informasi histori transaksi
-			$sql = "select [dbo].[transaksi].*, [dbo].[transaksi_detail].*, [dbo].[merchant].* 
-					from [dbo].[transaksi], [dbo].[transaksi_detail], [dbo].[merchant] 
-					where [transaksi].[PelangganID] = '".$id."' and 
-					[transaksi].[MerchantID] = [merchant].[MerchantID] and
-					[transaksi].[TransaksiID] = [transaksi_detail].[TransaksiID]";
+			$sql = "select transaksi.NoKartu, transaksi.TanggalTransaksi,  
+					transaksi_detail.Kuantitas, transaksi_detail.Diskon, 
+					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.Nama as KategoriProduk, 
+					toko_merchant.Alamat, toko_merchant.Kota, 
+					pelanggan.Nama, merchant.Nama as NamaMerchant
+					from transaksi, transaksi_detail, produk, kategori_produk, toko_merchant, kartu, pelanggan, merchant
+					where transaksi.TransaksiID = transaksi_detail.TransaksiID and 
+					transaksi_detail.ProdukID = produk.ProdukID and 
+					produk.KategoriID = kategori_produk.KategoriID and 
+					transaksi.TokoID = toko_merchant.TokoID and 
+					transaksi.NoKartu = kartu.NoKartu and 
+					kartu.PelangganID = pelanggan.PelangganID and 
+					toko_merchant.MerchantID = merchant.MerchantID and 
+					pelanggan.PelangganID =".$id." ";
 			return $this->db->query($sql);
 		}
 
@@ -101,11 +111,10 @@
 		}
 
 		function get_customerTransaksi(){ // mendapatkan informasi jumlah transaksi per customer
-			$sql = "select pelanggan.Nama as namaCustomer, count(transaksi_detail.TransaksiID) as jumlahTransaksi 
-					from transaksi, transaksi_detail, merchant, pelanggan 
-					where pelanggan.PelangganID = transaksi.PelangganID and 
-					transaksi.MerchantID = merchant.MerchantID and 
-					transaksi.TransaksiID = transaksi_detail.TransaksiID 
+			$sql = "select pelanggan.Nama as namaCustomer, count(transaksi.TransaksiID) as jumlahTransaksi 
+					from transaksi, pelanggan, kartu  
+					where transaksi.NoKartu = kartu.NoKartu and 
+					kartu.PelangganID = pelanggan.PelangganID
 					group by pelanggan.Nama order by jumlahTransaksi desc";
 			return $this->db->query($sql);
 		}
@@ -162,6 +171,16 @@
 					COUNT(datediff(yy,TanggalLahir,getdate())) as Jumlah 
 					from ".$this->table_name." group by datediff(yy,TanggalLahir,getdate())";
 			return $this->db->query($sql);
+		}
+
+		function get_customerPria(){ // mendapatkan jumlah customer pria
+			$sql = "select COUNT(*) as Jumlah from pelanggan where JenisKelamin like '%m%'";
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_customerWanita(){ // mendapatkan jumlah customer wanita
+			$sql = "select COUNT(*) as Jumlah from pelanggan where JenisKelamin like '%f%'";
+			return $this->db->query($sql)->row()->Jumlah;
 		}
 
 	}

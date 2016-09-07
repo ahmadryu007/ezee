@@ -34,7 +34,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Kota Dengan</span>
               <span class="info-box-text">Transaksi Terbanyak</span>
-              <span class="info-box-number"><?php echo $highKota; ?></span>
+              <span class="info-box-number"><?php //echo $highKota; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -45,7 +45,7 @@
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-send"></i></span>
             <div class="info-box-content">
-              <span class="info-box-text">Jumlah Collect </span>
+              <span class="info-box-text">Jumlah Collect</span>
               <span class="info-box-text">Point</span>
               <span class="info-box-number"></span>
             </div>
@@ -92,8 +92,8 @@
               <label>Cari Berdasarkan</label>
               <select class="form-control" name="searchField">
                 <option value="TransaksiID">ID Transaksi</option>
-                <option value="MerchantID">ID Merchant</option>
-                <option value="PelangganID">ID Pelanggan</option>
+                <option value="TokoID">ID Toko Merchant</option>
+                <option value="NoKartu">No Kartu</option>
               </select>
               <br />
               <div class="input-group">
@@ -115,11 +115,11 @@
               </table> -->
               <label><?php //echo $message; ?></label>
               <br />
-              <form action="<?php echo $base_url;?>index.php/customers/download_pdf" method="get">
+              <form action="<?php echo $base_url;?>index.php/transaksi/download_pdf" method="get">
                 <div class="col-md-6">
                   <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
                   <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/customers/download_csv" class="btn btn-info">
+                  <a href="<?php echo $base_url;?>index.php/transaksi/download_csv" class="btn btn-info">
                     <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
                   </a>
                 </div>
@@ -271,52 +271,6 @@
           <!-- /.box -->  
         </div>
 
-        <div class="col-md-6" id="analisis">
-          <!-- LINE CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Analisis Jumlah Transaksi Per-kota</h3>
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="kotaChart" style="height:250px"></canvas>
-                <div class="col-sm-3">
-                  <div id="kotaLegend" style="font-size:25px"></div>
-                </div>
-              </div>
-            </div>
-            </div>
-          <!-- /.box -->  
-        </div>
-
-        <div class="col-md-6">
-          <!-- BAR CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Chart Analisis Rating Pelanggan</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="col-md-3">
-                <div id="transaksiKategoriLegend"></div>
-              </div>
-              <div class="chart">
-                <canvas id="transaksiKategoriChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            </div>
-          <!-- /.box -->  
-        </div>
-
-
       </div>
 
 
@@ -372,6 +326,8 @@
                   var chart2 = new Chart(ctx2).Bar(data2);
                   document.getElementById("hariLegend").innerHTML = chart2.generateLegend();
 
+                  /*
+
                   // ==============================================================
                   // pie chart jumlah merchant per kota
                   var data3 = [ <?php
@@ -425,7 +381,7 @@
                   var ctx4 = document.getElementById("transaksiKategoriChart").getContext("2d");
                   var chart4 = new Chart(ctx4).Bar(data4);
 
-
+              */
               });
         </script>
 

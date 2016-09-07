@@ -49,11 +49,15 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Tanggal Daftar</strong>
-              <p class="text-muted"><?php echo $merchant->TanggalDaftar; ?></p>
+              <strong><i class="fa fa-book margin-r-5"></i> Tanggal Input</strong>
+              <p class="text-muted"><?php echo $merchant->TanggalInput; ?></p>
               <hr>
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Lokasi</strong>
-                <p class="text-muted"><?php echo $merchant->Alamat.'\n '.$merchant->Kota.'\n '.$merchant->Provinsi; ?></p>
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Lokasi Toko</strong>
+                <?php 
+                  foreach ($tokoMerchant as $t) {
+                    echo '<p class="text-muted">'.$t->Alamat.' ,'.$t->Kota.'</p>';
+                  }
+                ?>
               <hr>
 
               <strong><i class="fa fa-pencil margin-r-5"></i> Kategori</strong>
@@ -71,7 +75,7 @@
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Histori Transaksi</a></li>
-              <li><a href="#timeline" data-toggle="tab">Program</a></li>
+              <li><a href="#timeline" data-toggle="tab">Keterangan</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">

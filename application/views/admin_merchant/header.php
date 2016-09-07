@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Ezeelink</title>
+  <title>Admin Merchant</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -34,8 +34,6 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-
 
 <!-- Sparkline -->
 <script src="<?php echo $base_url; ?>plugins/sparkline/jquery.sparkline.min.js"></script>
@@ -71,7 +69,7 @@
     <!-- Logo -->
     <a href="#" class="logo">
       <span class="logo-mini"><b>A</b>ez</span>
-      <span class="logo-lg"><b>Admin</b>EZEELINK</span>
+      <span class="logo-lg"><b>Admin</b>MERCHANT</span>
     </a>
     <nav class="navbar navbar-static-top">
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -85,43 +83,40 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
-          <a href="<?php echo $base_url;?>index.php/dashboard">
+          <a href="<?php echo $base_url;?>index.php/merchantDashboard">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="<?php echo $base_url;?>index.php/merchants">
-            <i class="fa fa-bank"></i>
-            <span>Data Merchant</span>
+          <a href="<?php echo $base_url;?>index.php/merchantToko">
+            <i class="fa fa-institution"></i> <span>Data Toko</span>
           </a>
         </li>
-        <li>
-          <a href="<?php echo $base_url;?>index.php/transaksi">
+        <li class="treeview">
+          <a href="<?php echo $base_url;?>index.php/merchantProduk">
+            <i class="fa fa-cubes"></i> <span>Data Produk</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="<?php echo $base_url;?>index.php/merchantTransaksi">
             <i class="fa fa-dollar"></i> <span>Data Transaksi</span>
           </a>
         </li>
-        
         <li class="treeview">
-          <a href="<?php echo $base_url;?>index.php/customers">
+          <a href="<?php echo $base_url;?>index.php/merchantPelanggan">
             <i class="fa fa-user"></i> <span>Data Pelanggan</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="<?php echo $base_url;?>index.php/cards">
+          <a href="<?php echo $base_url;?>index.php/merchantKartu">
             <i class="fa fa-credit-card"></i> <span>Data Kartu</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="<?php echo $base_url;?>index.php/customers">
+          <a href="<?php echo $base_url;?>index.php/merchantDashboard">
             <i class="fa fa-anchor"></i> <span>Manajemen Pemasaran</span>
           </a>
         </li>
-        <li>
-          <a href="<?php echo $base_url;?>index.php/main/page/admin_ezeelink/kalendar">
-            <i class="fa fa-calendar"></i> <span>Kalendar</span>
-          </a>
-        </li>
-        
         <li class="treeview">
           <a href="<?php echo $base_url;?>index.php/authent/out">
             <i class="fa fa-share"></i> <span>Logout</span>

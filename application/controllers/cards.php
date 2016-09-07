@@ -63,7 +63,7 @@
 			$this->table->set_empty(" ");
 			$new_order = ($order_type=='asc'?'desc':'asc');
 			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">','No',
-				anchor('cards/index/'.$offset.'/UserId/'.$new_order,'UserId'),
+				anchor('cards/index/'.$offset.'/UserID/'.$new_order,'UserID'),
 				anchor('cards/index/'.$offset.'/NoKartu/'.$new_order,'NoKartu'),
 				anchor('cards/index/'.$offset.'/FlagMain/'.$new_order,'FlagMain'),
 				anchor('cards/index/'.$offset.'/FlagAktiv/'.$new_order,'FlagAktiv'),
@@ -73,7 +73,7 @@
 			$i=0 + $offset;
 			foreach ($cards as $c) {
 				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->NoKartu.'" onchange="cek()">', 
-					++$i, $c->UserId, $c->NoKartu,
+					++$i, $c->UserID, $c->NoKartu,
 					$c->FlagMain, $c->FlagAktiv, $c->TransDate, $c->MerchantID,
 					'<a href="'.$this->config->item('base_url').'index.php/cards/updateCard/'.$c->NoKartu.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('cards/delete/'.$c->NoKartu, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Kartu Ini ?')"))
@@ -90,6 +90,18 @@
 				$data['message'] = 'Data Berhasil Diupdate';
 			else
 				$data['message'] = '';
+
+			// ================================================
+			// data jumlah kartu
+			$data['jumlahKartu'] = $this->mKartu->count_all();
+
+			// ===============================================
+			// data jumlah kartu dengan flag aktiv true
+			$data['flagAktivTrue'] = $this->mKartu->get_aktivTrue();
+
+			// ===============================================
+			// data jumlah kartu dengan flag aktiv false
+			$data['flagAktivFalse'] = $this->mKartu->get_aktivFalse();
 
 			$this->load->view('header',$data);
 			$this->load->view('admin_ezeelink/dataCard', $data);
@@ -138,6 +150,9 @@
 
 		function addCard(){
 			$data['base_url'] = $this->config->item('base_url');
+			$data['idPelanggan'] = $this->mKartu->get_idPelanggan()->result();
+			$data['idMerchant'] = $this->mKartu->get_idMerchant()->result();
+
 
 			$this->load->view('header', $data);
 			$this->load->view('admin_ezeelink/addCard', $data);
@@ -145,10 +160,25 @@
 		}
 
 		function addSubmit(){
+			$flagMain = '';
+			if ($this->input->post('FlagMain') == "T" )
+				$flagMain = "T";
+			else 
+				$flagMain = "F";
+
+			$flagAktiv = '';
+			if ($this->input->post('FlagAktiv') == "T" )
+				$flagAktiv = "T";
+			else 
+				$flagAktiv = "F";
+
 			$data = array(
-				'UserId' => $this->input->post('UserId'),
+				'UserID' => $this->input->post('UserID'),
 				'NoKartu' => $this->input->post('NoKartu'),
 				'MerchantID' => $this->input->post('MerchantID'),
+				'PelangganID' => $this->input->post('PelangganID'),
+				'FlagMain' => $flagMain,
+				'FlagAktiv' => $flagAktiv,
 				'TransDate' => $this->input->post('TransDate')
 				);
 			$this->mKartu->save($data);
@@ -157,7 +187,9 @@
 
 		function updateCard($no){
 			$data['base_url'] = $this->config->item('base_url');
-			$data['card'] = $this->mKartu->get_by_id($no);
+			$data['card'] = $this->mKartu->get_by_id($no)->row();
+			$data['idPelanggan'] = $this->mKartu->get_idPelanggan()->result();
+			$data['idMerchant'] = $this->mKartu->get_idMerchant()->result();
 
 			$this->load->view('header', $data);
 			$this->load->view('admin_ezeelink/updateCard', $data);
@@ -165,10 +197,25 @@
 		}
 
 		function updateSubmit($no){
+			$flagMain = '';
+			if ($this->input->post('FlagMain') == "T" )
+				$flagMain = "T";
+			else 
+				$flagMain = "F";
+
+			$flagAktiv = '';
+			if ($this->input->post('FlagAktiv') == "T" )
+				$flagAktiv = "T";
+			else 
+				$flagAktiv = "F";
+
 			$data = array(
-				'UserId' => $this->input->post('UserId'),
+				'UserID' => $this->input->post('UserID'),
 				'NoKartu' => $this->input->post('NoKartu'),
 				'MerchantID' => $this->input->post('MerchantID'),
+				'PelangganID' => $this->input->post('PelangganID'),
+				'FlagMain' => $flagMain,
+				'FlagAktiv' => $flagAktiv,
 				'TransDate' => $this->input->post('TransDate')
 				);
 			$this->mKartu->update($no, $data);

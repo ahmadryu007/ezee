@@ -29,15 +29,11 @@
               <div class="box-body">
                 <div class="form-group">
                   <label>ID Pelanggan</label>
-                  <input type="text" class="form-control" name="PelangganID" placeholder="ID Pelanggan">
+                  <input type="text" class="form-control" name="PelangganID" placeholder="<?php echo $newID; ?>" disabled>
                 </div>
                 <div class="form-group">
                   <label>Nama Pelanggan</label>
                   <input type="text" class="form-control" name="Nama" placeholder="Nama Pelanggan">
-                </div>
-                <div class="form-group">
-                  <label>Pekerjaan</label>
-                  <input type="text" class="form-control" name="Pekerjaan" placeholder="Pekerjaan">
                 </div>
                 <div class="form-group">
                   <label>Alamat</label>
@@ -62,6 +58,13 @@
                 <div class="form-group">
                   <label>Email</label>
                   <input type="email" class="form-control" name="Email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                  <label>Jenis Kelamin</label>
+                  <select class="form-control" name="JenisKelamin">
+                    <option value="m">Pria</option>
+                    <option value="f">Wanita</option>
+                  </select>
                 </div>
                 <!-- Date -->
               <div class="form-group">

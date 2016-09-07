@@ -46,32 +46,28 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Alamat</label>
-                  <input type="text" class="form-control" name="Alamat" value="<?php echo $merchant->Alamat; ?>">
+                  <label>Facebook</label>
+                  <input type="tel" class="form-control" name="AlamatFB" value="<?php echo $merchant->AlamatFB;?>">
                 </div>
                 <div class="form-group">
-                  <label>Kota</label>
-                  <input type="text" class="form-control" name="Kota" value="<?php echo $merchant->Kota; ?>">
+                  <label>Twitter</label>
+                  <input type="tel" class="form-control" name="AlamatTW" value="<?php echo $merchant->AlamatTW;?>">
                 </div>
                 <div class="form-group">
-                  <label>Provinsi</label>
-                  <input type="text" class="form-control" name="Provinsi" value="<?php echo $merchant->Provinsi; ?>">
+                  <label>Website</label>
+                  <input type="tel" class="form-control" name="AlamatWWW" value="<?php echo $merchant->AlamatWWW;?>">
                 </div>
                 <div class="form-group">
-                  <label>Negara</label>
-                  <input type="text" class="form-control" name="Negara" value="<?php echo $merchant->Negara; ?>">
+                  <label>Tagline</label>
+                  <input type="tel" class="form-control" name="Tagline" value="<?php echo $merchant->Tagline;?>">
                 </div>
                 <div class="form-group">
-                  <label>Telepon</label>
-                  <input type="tel" class="form-control" name="Telepon" value="<?php echo $merchant->Telepon; ?>">
-                </div>
-                <div class="form-group">
-                <label>Tanggal Daftar</label>
+                <label>Tanggal Input</label>
                 <div class="input-group date">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" name="TanggalDaftar" class="form-control pull-right" id="datepicker" value="<?php echo $merchant->TanggalDaftar ?>">
+                  <input type="text" name="TanggalInput" class="form-control pull-right" id="datepicker" value="<?php echo $merchant->TanggalInput ?>">
                 </div>
                 <!-- /.input group -->
               </div>
@@ -81,8 +77,8 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="exampleInputFile">Logo</label>
-                  <input type="file" id="exampleInputFile">
+                  <label for="Logo">Logo</label>
+                  <input type="file" id="Logo">
 
                   <p class="help-block"></p>
                 </div>

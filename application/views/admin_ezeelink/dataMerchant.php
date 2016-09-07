@@ -32,7 +32,7 @@
             <span class="info-box-icon bg-blue"><i class="fa fa-flag-o"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Kota Dengan</span>
+              <span class="info-box-text">Kota Dengan Toko</span>
               <span class="info-box-text">Merchant Terbanyak</span>
               <span class="info-box-number"><?php echo $highKota; ?></span>
             </div>
@@ -45,9 +45,9 @@
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-send"></i></span>
             <div class="info-box-content">
-              <span class="info-box-text">Merchant </span>
+              <span class="info-box-text">Toko Merchant </span>
               <span class="info-box-text">Di Jakarta</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number"><?php echo $tokoJakarta; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -59,9 +59,9 @@
             <span class="info-box-icon bg-green"><i class="fa fa-reply"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Merchant </span>
+              <span class="info-box-text">Toko Merchant </span>
               <span class="info-box-text">Luar Jakarta</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number"><?php echo $tokoLuarJakarta; ?></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -94,8 +94,6 @@
               <label>Cari Berdasarkan</label>
               <select class="form-control" name="searchField">
                 <option value="Nama">Nama</option>
-                <option value="Alamat">Alamat</option>
-                <option value="Kota">Kota</option>
               </select>
               <br />
               <div class="input-group">
@@ -121,7 +119,7 @@
                 <div class="col-md-6">
                   <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
                   <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/customers/download_csv" class="btn btn-info">
+                  <a href="<?php echo $base_url;?>index.php/merchants/download_csv" class="btn btn-info">
                     <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
                   </a>
                 </div>
@@ -172,6 +170,15 @@
                 }
               }
               </script>
+              <ul class="pagination pagination-sm">
+                <li>
+                  <?php
+                    if(empty($search)) 
+                    echo $pagination; 
+                  ?>
+                </li>
+              </ul>
+              <br />
 
             </div>
         
@@ -185,6 +192,7 @@
         <script type="text/javascript" src="<?php echo $base_url;?>assets/Chart.js"></script>
         <script type="text/javascript">
         $(document).ready(function(){
+          
           // ==============================================================
           // pie chart data kota merchant
 

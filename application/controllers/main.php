@@ -3,6 +3,7 @@
 class Main extends CI_Controller{
 	function __construct(){
 		parent::__construct();
+		$this->load->helper(array('form', 'url'));
 		$this->user	= unserialize(base64_decode($this->session->userdata('user')));
 	}
 
@@ -13,8 +14,10 @@ class Main extends CI_Controller{
 
 		if (empty($this->session->userdata('user'))){
 			$this->load->view('login', $data);
-		}else{
-			$this->page('admin_ezeelink','dashboard');
+		}else if($this->user['group'] == 'adminezee' ){
+			redirect('dashboard/index', 'refresh');
+		}else if($this->user['group'] == 'adminmerchant' ){
+			redirect('merchantDashboard', 'refresh');
 		}
 	}
 

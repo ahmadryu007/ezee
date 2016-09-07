@@ -58,18 +58,13 @@
 			$new_order = ($order_type=='asc'?'desc':'asc');
 			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">', 'No',
 				anchor('merchants/index/'.$offset.'/Nama/'.$new_order,'Nama'),
-				anchor('merchants/index/'.$offset.'/Alamat/'.$new_order,'Alamat'),
-				anchor('merchants/index/'.$offset.'/Tanggal Daftar/'.$new_order,'TanggalDaftar'),
-				anchor('merchants/index/'.$offset.'/Kota/'.$new_order,'Kota'),
-				anchor('merchants/index/'.$offset.'/Telepon/'.$new_order,'Telepon'),
 				'Aksi');
 
 			$i=0 + $offset;
 			
 			foreach ($paged_merchant as $m) {
 				$this->table->add_row('<input type="checkbox" name="'.$i.'" value="'.$m->MerchantID.'" onchange="cek()">',
-					++$i, $m->Nama, $m->Alamat,
-					$m->TanggalDaftar, $m->Kota, $m->Telepon, 
+					++$i, $m->Nama, 
 					'<a href="'.$this->config->item('base_url').'index.php/merchants/profileMerchant/'.$m->MerchantID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
 					'<a href="'.$this->config->item('base_url').'index.php/merchants/update/'.$m->MerchantID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('merchants/delete/'.$m->MerchantID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Merchant Ini ?')"))
@@ -90,17 +85,26 @@
 
 			$data['jumlahMerchant'] = $this->mMerchant->count_all();
 
+			
 			// ==================================================
 			// data jumlah merchant per kota (chart)
-			$data['merchantKota'] = $this->mMerchant->get_kota()->result();
+			$data['merchantKota'] = $this->mMerchant->get_kotaMerchant()->result();
 
 			// ===================================================
 			// data kota dengan merchant terbanyak
-			$data['highKota'] = $this->mMerchant->get_kota()->first_row()->Kota;
+			$data['highKota'] = $this->mMerchant->get_kotaMerchant()->first_row()->Kota;
 
 			// ===================================================
 			// data jumlah merchant perkategori
 			$data['merchantKategori'] = $this->mMerchant->get_kategoriMerchant()->result();
+
+			// ===================================================
+			// data jumlah toko merchant di jakarta
+			$data['tokoJakarta'] = $this->mMerchant->get_merchantJakarta();
+
+			// ===================================================
+			// data jumlah toko merchant di luar jakarta
+			$data['tokoLuarJakarta'] = $this->mMerchant->get_merchantLuarJakarta();
 
 			$this->load->view('header', $data);
 			$this->load->view('admin_ezeelink/dataMerchant', $data);
@@ -146,11 +150,14 @@
 			$this->table->set_template($template);
 
 			$this->table->set_empty(" ");
-			$this->table->set_heading('No','Nama Customer', 'Produk', 'Harga', 'Kuantitas','Diskon','Tempat','Tanggal');
+			$this->table->set_heading(' ','No Kartu','Tanggal', 'Jumlah Bayar(Rp.)','Nama Produk','Tempat', 'ID Toko');
 			$i=0;
 			foreach ($merchantTransaksi as $c) {
-				$this->table->add_row(++$i, $c->namaCustomer, $c->NamaProduk, $c->HargaPerUnit , $c->Kuantitas, 
-					$c->Diskon, $c->TempatTransaksi, $c->TanggalTransaksi
+				$jumlah = $c->HargaPerUnit * $c->Kuantitas;
+				$jumlahBayar = $jumlah - ($jumlah * $c->Diskon);
+				$this->table->add_row(++$i, $c->NoKartu,
+					$c->TanggalTransaksi, $jumlahBayar , $c->NamaProduk,
+					$c->Alamat.', '.$c->Kota , $c->TokoID 
 					);
 			}
 
@@ -163,6 +170,10 @@
 			// ==================================================
 			// data rating merchant
 			$data['ratingMerchant'] = $this->mMerchant->get_ratingMerchant($i);
+
+			// ==================================================
+			// data toko merchant
+			$data['tokoMerchant'] = $this->mMerchant->get_tokoMerchant($id)->result();
 
 			$this->load->view('header', $data);
 			$this->load->view('admin_ezeelink/profileMerchant', $data);
@@ -186,13 +197,12 @@
 				'MerchantID' => $this->input->post('MerchantID'),
 				'Nama' => $this->input->post('NamaMerchant'),
 				'KategoriID' => $this->input->post('KategoriID'),
-				'Alamat' => $this->input->post('Alamat'),
-				'Kota' => $this->input->post('Kota'),
-				'Provinsi' => $this->input->post('Provinsi'),
-				'Negara' => $this->input->post('Negara'),
-				'Telepon' => $this->input->post('Telepon'),
-				'Alamat' => $this->input->post('Alamat'),
-				'TanggalDaftar' => $this->input->post('TanggalDaftar'),
+				'AlamatFB' => $this->input->post('AlamatFB'),
+				'AlamatTW' => $this->input->post('AlamatTW'),
+				'AlamatWWW' => $this->input->post('AlamatWWW'),
+				'Tagline' => $this->input->post('Tagline'),
+				'TanggalInput' => $this->input->post('TanggalInput'),
+				'Logo' => $this->input->post('Logo'),
 				'Catatan' => $this->input->post('Catatan')
 				);
 			$this->mMerchant->save($data);
@@ -206,6 +216,9 @@
 
 		function update($id){
 			$data['base_url'] = $this->config->item('base_url');
+			$sql = "select * from kategori_merchant";
+			$kategori = $this->db->query($sql)->result();
+			$data['kategori'] = $kategori;
 
 			$data['merchant'] = $this->mMerchant->get_by_id($id)->row();
 
@@ -219,13 +232,12 @@
 				'MerchantID' => $this->input->post('MerchantID'),
 				'Nama' => $this->input->post('NamaMerchant'),
 				'KategoriID' => $this->input->post('KategoriID'),
-				'Alamat' => $this->input->post('Alamat'),
-				'Kota' => $this->input->post('Kota'),
-				'Provinsi' => $this->input->post('Provinsi'),
-				'Negara' => $this->input->post('Negara'),
-				'Telepon' => $this->input->post('Telepon'),
-				'Alamat' => $this->input->post('Alamat'),
-				'TanggalDaftar' => $this->input->post('TanggalDaftar'),
+				'AlamatFB' => $this->input->post('AlamatFB'),
+				'AlamatTW' => $this->input->post('AlamatTW'),
+				'AlamatWWW' => $this->input->post('AlamatWWW'),
+				'Tagline' => $this->input->post('Tagline'),
+				'TanggalInput' => $this->input->post('TanggalInput'),
+				'Logo' => $this->input->post('Logo'),
 				'Catatan' => $this->input->post('Catatan')
 				);
 			$this->mMerchant->update($id, $data);
