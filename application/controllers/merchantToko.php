@@ -102,5 +102,40 @@
 			$this->load->view('admin_merchant/dataToko', $data);
 			$this->load->view('admin_merchant/footer',$data);
 		}
+
+		function download_csv(){
+			$this->load->model('admin_merchant/mTokoMerchant');
+    		$this->load->dbutil();
+    		$this->load->helper('file');
+    
+    		$report = $this->mTokoMerchant->get_all_data($this->user['id']);
+
+    		$delimiter = ",";
+    		$newline = "\r\n";
+    		$new_report = $this->dbutil->csv_from_result($report, $delimiter, $newline);
+    
+    		write_file($this->file_path . '/csv_merchant_pelanggan/csv_file.xls', $new_report);
+    		
+    		$this->load->helper('download');
+    		$data = file_get_contents($this->file_path . '/csv_merchant_pelanggan/csv_file.xls');
+    		$name = 'Store-Merchant-'.date('d-m-Y').'.xls';
+    		force_download($name, $data);
+		}
+
+		function download_pdf(){
+			$this->load->library('cezpdf');
+		    $db_data = array();
+		    $db_data = $this->mTokoMerchant->get_all_data($this->user['id'])->result_array();
+		    $jumlah = $this->input->get('jumlah');
+		    $idx=0;
+		    for($i=0;$i<$jumlah;$i++){
+		    	$idx++;
+		    	$db_data[] = $this->mKartu->get_by_id($this->input->get($idx))->row_array();
+		    }
+
+		    $col_names = array();
+		    $this->cezpdf->ezTable($db_data);
+		    $this->cezpdf->ezStream();
+		}
 	}
 ?>

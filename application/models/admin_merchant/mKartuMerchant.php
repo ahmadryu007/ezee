@@ -1,22 +1,24 @@
 <?php 
-	class MTokoMerchant extends CI_Model{
-		private $primary_key = 'TokoID';
-		private $table_name = 'toko_merchant';
+	class MKartuMerchant extends CI_Model{
+		private $primary_key = 'NoKartu';
+		private $table_name = 'kartu';
 
 		function __construct(){
 			parent::__construct();
 		}
 
-		function get_paged_list($merchantID, $limit=10, $offset=0, $order_column='', $order_type='asc', $search='', $searchField='TokoID')
+		function get_paged_list($merchantID, $limit=10, $offset=0, $order_column='', $order_type='asc', $search='', $searchField='NoKartu')
 		{
 			if (empty($searchField))
-				$searchField = 'TokoID';
+				$searchField = 'NoKartu';
 			
 			if(empty($order_column) || empty($order_type) || empty($search) || empty($searchField))
 			{
+				$this->db->join('pelanggan', 'kartu.PelangganID = pelanggan.PelangganID');
 				$this->db->where('MerchantID', $merchantID);
 				$this->db->order_by($this->primary_key, 'asc');
 			}else{
+				$this->db->join('pelanggan', 'kartu.PelangganID = pelanggan.PelangganID');
 				$this->db->where('MerchantID', $merchantID);
 				$this->db->order_by($order_column, $order_type);
 				$this->db->like($searchField, $search);
@@ -26,7 +28,7 @@
 		}
 
 		function count_all($id){
-			$sql = "select COUNT(*) as Jumlah from toko_merchant where MerchantID=".$id;
+			$sql = "select COUNT(*) as Jumlah from kartu where MerchantID=".$id;
 			return $this->db->query($sql)->row()->Jumlah;
 		}
 
