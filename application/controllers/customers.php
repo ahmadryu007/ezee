@@ -69,7 +69,7 @@
 				'Aksi');
 			$i=0 + $offset;
 			foreach ($customers as $customer) {
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$customer->PelangganID.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$customer->PelangganID.'" onchange="cek()">', 
 					++$i, $customer->Nama,
 					$customer->Alamat, $customer->Kota,
 					'<a href="'.$this->config->item('base_url').'index.php/customers/profileCustomer/'.$customer->PelangganID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -152,13 +152,17 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mCustomer->get_all_data()->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mCustomer->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mCustomer->count_all();
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mCustomer->get_by_id($id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);

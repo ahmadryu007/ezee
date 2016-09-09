@@ -72,8 +72,17 @@
 			return $this->db->query($sql);
 		}
 
-		function get_by_id($id){
-			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$id."' ";
+		function get_by_id($idMerchant, $idTransaksi){
+			$sql = "select transaksi.TransaksiID, transaksi.NoKartu, transaksi.TanggalTransaksi,transaksi.TokoID, 
+					produk.NamaProduk, produk.HargaPerUnit, 
+					transaksi_detail.Kuantitas, transaksi_detail.Diskon, 
+					toko_merchant.Alamat
+					 FROM transaksi
+					JOIN transaksi_detail ON transaksi.TransaksiID = transaksi_detail.TransaksiID 
+					JOIN toko_merchant ON transaksi.TokoID = toko_merchant.TokoID 
+					JOIN produk ON transaksi_detail.ProdukID = produk.ProdukID 
+					WHERE toko_merchant.MerchantID = '".$idMerchant."' and 
+					produk.MerchantID = '".$idMerchant."' and transaksi.TransaksiID=".$idTransaksi;
 			return $this->db->query($sql);
 		}
 	}

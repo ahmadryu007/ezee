@@ -79,7 +79,7 @@
 		function get_transaksiPelanggan($id){ // mendapatkan informasi histori transaksi
 			$sql = "select transaksi.NoKartu, transaksi.TanggalTransaksi,  
 					transaksi_detail.Kuantitas, transaksi_detail.Diskon, 
-					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.Nama as KategoriProduk, 
+					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.NamaKategori as KategoriProduk, 
 					toko_merchant.Alamat, toko_merchant.Kota, 
 					pelanggan.Nama, merchant.Nama as NamaMerchant
 					from transaksi, transaksi_detail, produk, kategori_produk, toko_merchant, kartu, pelanggan, merchant

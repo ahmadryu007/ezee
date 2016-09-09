@@ -75,7 +75,7 @@
 			foreach ($transaksi as $c) {
 				$jumlah = $c->HargaPerUnit * $c->Kuantitas;
 				$jumlahBayar = $jumlah - ($jumlah * $c->Diskon);
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->TransaksiID.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->TransaksiID.'" onchange="cek()">', 
 					++$i, $c->TransaksiID, $c->TokoID, $c->Alamat,
 					$c->NamaProduk, $jumlahBayar, $c->TanggalTransaksi
 					);
@@ -126,13 +126,17 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mTransaksiMerchant->get_all_data($this->user['id'])->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mTransaksiMerchant->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mTransaksiMerchant->count_all($this->user['id']);
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mTransaksiMerchant->get_by_id($this->user['id'], $id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);

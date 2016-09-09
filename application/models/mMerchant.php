@@ -13,10 +13,14 @@
 				$searchField = 'Nama';
 
 			if(empty($order_column) || empty($order_type) || empty($search))
+			{
+				$this->db->join('kategori_merchant', 'merchant.KategoriID = kategori_merchant.KategoriID');
 				$this->db->order_by($this->primary_key, 'asc');
-			else
+			}else{
+				$this->db->join('kategori_merchant', 'merchant.KategoriID = kategori_merchant.KategoriID');
 				$this->db->order_by($order_column, $order_type);
 				$this->db->like($searchField, $search);
+			}
 			return $this->db->get($this->table_name, $limit, $offset);
 		}
 
@@ -36,7 +40,7 @@
 		}
 
 		function get_by_id($id){
-			$sql = "select kategori_merchant.Nama as Kategori, merchant.* 
+			$sql = "select kategori_merchant.NamaKategori as Kategori, merchant.* 
 					from kategori_merchant, merchant 
 					where merchant.KategoriID = kategori_merchant.KategoriID and 
 					merchant.MerchantID =".$id;
@@ -55,7 +59,7 @@
 		function get_merchantTransaksi($id){ // function untuk mendapatkan data histori transaksi di suatu merchant
 			$sql = "select transaksi.NoKartu, transaksi.TanggalTransaksi,  
 					transaksi_detail.Kuantitas, transaksi_detail.Diskon, 
-					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.Nama as KategoriProduk, 
+					produk.NamaProduk, produk.HargaPerUnit, kategori_produk.NamaKategori as KategoriProduk, 
 					toko_merchant.Alamat, toko_merchant.Kota, 
 					pelanggan.Nama, toko_merchant.TokoID
 					from transaksi, transaksi_detail, produk, kategori_produk, toko_merchant, kartu, pelanggan, merchant
@@ -105,9 +109,9 @@
 		}
 
 		function get_kategoriMerchant(){ // mendapatkan data group kategori merchant
-			$sql = "select kategori_merchant.Nama, COUNT(merchant.KategoriID)as Jumlah
+			$sql = "select kategori_merchant.NamaKategori, COUNT(merchant.KategoriID)as Jumlah
 					from merchant, kategori_merchant 
-					where merchant.KategoriID = kategori_merchant.KategoriID group by kategori_merchant.Nama 
+					where merchant.KategoriID = kategori_merchant.KategoriID group by kategori_merchant.NamaKategori 
 					order by Jumlah desc";
 			return $this->db->query($sql);
 		}

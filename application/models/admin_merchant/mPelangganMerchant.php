@@ -59,8 +59,13 @@
 			return $this->db->query($sql);
 		}
 
-		function get_by_id($id){
-			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$id."' ";
+		function get_by_id($idMerchant, $idPelanggan){
+			$sql = "select pelanggan.Nama, pelanggan.Alamat, pelanggan.Kota, 
+					pelanggan.Provinsi, pelanggan.Negara, pelanggan.Telepon, 
+					pelanggan.Alamat, pelanggan.JenisKelamin, pelanggan.TanggalLahir
+					from pelanggan, kartu 
+					where kartu.PelangganID = pelanggan.PelangganID and 
+					kartu.MerchantID =".$idMerchant." and pelanggan.PelangganID=".$idPelanggan;
 			return $this->db->query($sql);
 		}
 	}

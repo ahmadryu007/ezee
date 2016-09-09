@@ -73,7 +73,7 @@
 				'Aksi');
 			$i=0 + $offset;
 			foreach ($card as $c) {
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->NoKartu.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->NoKartu.'" onchange="cek()">', 
 					++$i, $c->NoKartu, $c->Nama,
 					$c->FlagMain, $c->FlagAktiv, $c->TransDate,
 					'<a href="'.$this->config->item('base_url').'index.php/merchantKartu/updateKartu/'.$c->NoKartu.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -92,9 +92,17 @@
 			else
 				$data['message'] = '';
 
-			//============================================
-			//data jumlah kartu merchant
+			// ============================================
+			// data jumlah kartu merchant
 			$data['jumlahKartu'] = $this->mKartuMerchant->count_all($this->user['id']);
+
+			// ============================================
+			// data jumlah kartu dengan flag aktiv true
+			$data['flagAktivTrue'] = $this->mKartuMerchant->get_aktivTrue($this->user['id']);
+
+			// ============================================
+			// data jumlah kartu dengan flag aktiv false
+			$data['flagAktivFalse'] = $this->mKartuMerchant->get_aktivFalse($this->user['id']);
 
 			$card = $this->mKartuMerchant->get_paged_list($merchantID,$this->limit, $offset, 
 				$order_column, $order_type, $search, $searchField)->result();
@@ -126,13 +134,17 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mKartuMerchant->get_all_data($this->user['id'])->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mKartu->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mKartuMerchant->count_all($this->user['id']);
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mKartuMerchant->get_by_id($id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);

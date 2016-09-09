@@ -11,6 +11,50 @@
       </ol>
     </section>
     <section class="content">
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-credit-card"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Kartu</span>
+              <span class="info-box-number"><?php echo $jumlahKartu ; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-flag-checkered"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Kartu Flag Aktiv </span>
+              <span class="info-box-text">True</span>
+              <span class="info-box-number"><?php echo $flagAktivTrue; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-flag"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Kartu Flag Aktiv </span>
+              <span class="info-box-text">False</span>
+              <span class="info-box-number"><?php echo $flagAktivFalse; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
       
       <div class="row">
         <div class="col-md-3">
@@ -57,16 +101,7 @@
               </table> -->
               <label><?php echo $message; ?></label>
               <br />
-              <form action="<?php echo $base_url;?>index.php/merchantKartu/download_pdf" method="get">
-                <div class="col-md-6">
-                  <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
-                  <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/merchantKartu/download_csv" class="btn btn-info">
-                    <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
-                  </a>
-                </div>
-                </form>
-                <form action="<?php echo $base_url;?>index.php/merchantKartu" method="post">
+              <form action="<?php echo $base_url;?>index.php/merchantKartu" method="post">
                   <div class="col-md-6">
                     <label>Tampilkan Per</label>
                       <select name="limit">
@@ -77,10 +112,17 @@
                     <label>Data</label>
                     <input type="submit" class="btn btn-default" value="Ok">
                   </div>
-                  <br />
-                  <div><?php echo $table;?></div>
-                  <div><?php echo $this->db->last_query(); ?></div>
                 </form>
+
+                <form action="<?php echo $base_url;?>index.php/merchantKartu/download_pdf" method="post">
+                    <input type="text" id="jumlah" name="jumlah" value=0 size=5 onchange="cek()" disabled>
+                    <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
+                    <a href="<?php echo $base_url;?>index.php/merchantKartu/download_csv" class="btn btn-info">
+                      <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
+                    </a>
+                    <br />
+                    <div><?php echo $table;?></div>
+                  </form>
                 
               <script type="text/javascript">
               function clickAll(){

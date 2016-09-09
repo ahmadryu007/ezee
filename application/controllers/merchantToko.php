@@ -74,7 +74,7 @@
 				'Aksi');
 			$i=0 + $offset;
 			foreach ($store as $c) {
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->TokoID.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->TokoID.'" onchange="cek()">', 
 					++$i, $c->TokoID, $c->Alamat,
 					$c->Kota, $c->Provinsi, $c->Telepon, $c->Email, $c->TanggalInput,
 					'<a href="'.$this->config->item('base_url').'index.php/merchantToko/updateToko/'.$c->TokoID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -93,9 +93,17 @@
 			else
 				$data['message'] = '';
 
-			//============================================
-			//data jumlah toko merchant
+			// ============================================
+			// data jumlah toko merchant
 			$data['jumlahToko'] = $this->mTokoMerchant->count_all($this->user['id']);
+
+			// ============================================
+			// data kota dengan toko merchant terbanyak
+			$data['highCity'] = $this->mTokoMerchant->get_kotaTokoMerchant($this->user['id'])->first_row()->Kota;
+
+			// ============================================
+			// data toko dengan transaksi tebanyak
+			$data['highStore'] = $this->mTokoMerchant->get_transaksiToko($this->user['id'])->first_row()->TokoID;
 
 
 			$this->load->view('admin_merchant/header',$data);
@@ -125,13 +133,17 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mTokoMerchant->get_all_data($this->user['id'])->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mKartu->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mTokoMerchant->count_all($this->user['id']);
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mTokoMerchant->get_by_id($id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);

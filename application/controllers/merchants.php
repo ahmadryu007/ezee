@@ -58,13 +58,15 @@
 			$new_order = ($order_type=='asc'?'desc':'asc');
 			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">', 'No',
 				anchor('merchants/index/'.$offset.'/Nama/'.$new_order,'Nama'),
+				anchor('merchants/index/'.$offset.'/NamaKategori/'.$new_order,'Kategori'),
+				anchor('merchants/index/'.$offset.'/TanggalInput/'.$new_order,'TanggalInput'),
 				'Aksi');
 
 			$i=0 + $offset;
 			
 			foreach ($paged_merchant as $m) {
-				$this->table->add_row('<input type="checkbox" name="'.$i.'" value="'.$m->MerchantID.'" onchange="cek()">',
-					++$i, $m->Nama, 
+				$this->table->add_row('<input type="checkbox" name="ck'.$i.'" value="'.$m->MerchantID.'" onchange="cek()">',
+					++$i, $m->Nama, $m->NamaKategori, $m->TanggalInput, 
 					'<a href="'.$this->config->item('base_url').'index.php/merchants/profileMerchant/'.$m->MerchantID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
 					'<a href="'.$this->config->item('base_url').'index.php/merchants/update/'.$m->MerchantID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('merchants/delete/'.$m->MerchantID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Merchant Ini ?')"))
@@ -127,6 +129,26 @@
     		$data = file_get_contents($this->file_path . '/csv_merchant/csv_file.xls');
     		$name = 'Merchants-'.date('d-m-Y').'.xls';
     		force_download($name, $data);
+		}
+
+		function download_pdf(){
+			$this->load->library('cezpdf');
+		    $db_data = array();
+		    $row_data = array();
+		    $jumlah = $this->mMerchant->count_all();
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mMerchant->get_by_id($id)->row_array();
+		    }
+
+		    $db_data = $row_data;
+
+		    $col_names = array();
+		    $this->cezpdf->ezTable($db_data);
+		    $this->cezpdf->ezStream();
 		}
 
 		function profileMerchant($id){

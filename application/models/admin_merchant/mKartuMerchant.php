@@ -56,5 +56,15 @@
 			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$id."' ";
 			return $this->db->query($sql);
 		}
+
+		function get_aktivTrue($id){ // mendapatkan jumlah kartu dengan flag aktiv true
+			$sql = "select COUNT(NoKartu) as Jumlah from kartu where FlagAktiv like 'T' and MerchantID=".$id;
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_aktivFalse($id){ // mendapatkan jumlah kartu dengan flag aktiv false
+			$sql = "select COUNT(NoKartu) as Jumlah from kartu where FlagAktiv like 'F' and MerchantID=".$id;
+			return $this->db->query($sql)->row()->Jumlah;
+		}
 	}
 ?>

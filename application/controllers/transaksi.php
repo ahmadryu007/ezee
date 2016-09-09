@@ -55,21 +55,23 @@
 
 			$this->table->set_empty(" ");
 			$new_order = ($order_type=='asc'?'desc':'asc');
-			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">', 'No',
-				anchor('transaksi/index/'.$offset.'/TransaksiID/'.$new_order,'TransaksiID'),
-				anchor('transaksi/index/'.$offset.'/TokoID/'.$new_order,'TokoID'),
-				anchor('transaksi/index/'.$offset.'/NoKartu/'.$new_order,'NoKartu'),
-				anchor('transaksi/index/'.$offset.'/TanggalTransaksi/'.$new_order,'TanggalTransaksi'));
+			$this->table->set_heading('<input type="checkbox" name="idxall" value="all" id="checkMaster" onclick="clickAll()">','No',
+				anchor('merchantTransaksi/index/'.$offset.'/TransaksiID/'.$new_order,'TransaksiID'),
+				anchor('merchantTransaksi/index/'.$offset.'/TokoID/'.$new_order,'TokoID'),
+				anchor('merchantTransaksi/index/'.$offset.'/Alamat/'.$new_order,'Alamat'),
+				anchor('merchantTransaksi/index/'.$offset.'/NamaProduk/'.$new_order,'Nama Produk'),
+				anchor('#', 'Jumlah Bayar'),
+				anchor('merchantTransaksi/index/'.$offset.'/TanggalTransaksi/'.$new_order,'TanggalTransaksi')
+				);
 
 			$i=0 + $offset;
-			foreach ($paged_transaksi as $t) {
-				$this->table->add_row('<input type="checkbox" name="'.$i.'" value="'.$t->TransaksiID.'" onchange="cek()">', 
-					++$i, $t->TransaksiID, 
-					$t->TokoID,
-					$t->NoKartu,
-					//anchor($this->config->item('base_url').'index.php/merchants/profileMerchant/'.$t->MerchantID, $t->MerchantID), 
-					//anchor($this->config->item('base_url').'index.php/customers/profileCustomer/'.$t->PelangganID, $t->PelangganID),
-					$t->TanggalTransaksi);
+			foreach ($paged_transaksi as $c) {
+				$jumlah = $c->HargaPerUnit * $c->Kuantitas;
+				$jumlahBayar = $jumlah - ($jumlah * $c->Diskon);
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->TransaksiID.'" onchange="cek()">', 
+					++$i, $c->TransaksiID, $c->TokoID, $c->Alamat,
+					$c->NamaProduk, $jumlahBayar, $c->TanggalTransaksi
+					);
 			}
 
 			// ===================================================================
@@ -189,6 +191,26 @@
     		$data = file_get_contents($this->file_path . '/csv_transaksi/csv_file.xls');
     		$name = 'Transaksi-'.date('d-m-Y').'.xls';
     		force_download($name, $data);
+		}
+
+		function download_pdf(){
+			$this->load->library('cezpdf');
+		    $db_data = array();
+		    $row_data = array();
+		    $jumlah = $this->mTransaksi->count_all();
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mTransaksi->get_by_id($id)->row_array();
+		    }
+
+		    $db_data = $row_data;
+
+		    $col_names = array();
+		    $this->cezpdf->ezTable($db_data);
+		    $this->cezpdf->ezStream();
 		}
 
 	}

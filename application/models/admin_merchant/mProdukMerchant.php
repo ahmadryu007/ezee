@@ -56,5 +56,38 @@
 			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$id."' ";
 			return $this->db->query($sql);
 		}
+
+		function get_highProdukPria($id){ // mendapatkan produk paling diminati pria
+			$sql = "select produk.NamaProduk, COUNT(transaksi_detail.ID) as Jumlah 
+					from produk, transaksi_detail, transaksi, kartu, pelanggan
+					where transaksi_detail.ProdukID = produk.ProdukID and 
+					transaksi_detail.TransaksiID = transaksi.TransaksiID and 
+					transaksi.NoKartu = kartu.NoKartu and 
+					kartu.PelangganID = pelanggan.PelangganID and 
+					pelanggan.JenisKelamin like 'M' and 
+					produk.MerchantID = '".$id."'
+					group by produk.NamaProduk 
+					order by Jumlah desc";
+			return $this->db->query($sql)->first_row()->NamaProduk;
+		}
+
+		function get_highProdukWanita($id){ // mendapatkan produk paling diminati wanita
+			$sql = "select produk.NamaProduk, COUNT(transaksi_detail.ID) as Jumlah 
+					from produk, transaksi_detail, transaksi, kartu, pelanggan
+					where transaksi_detail.ProdukID = produk.ProdukID and 
+					transaksi_detail.TransaksiID = transaksi.TransaksiID and 
+					transaksi.NoKartu = kartu.NoKartu and 
+					kartu.PelangganID = pelanggan.PelangganID and 
+					pelanggan.JenisKelamin like 'F' and 
+					produk.MerchantID = '".$id."'
+					group by produk.NamaProduk 
+					order by Jumlah desc";
+			return $this->db->query($sql)->first_row()->NamaProduk;
+		}
+
+		function get_jumlahKategoriProduk($id){
+			$sql = "select distinct KategoriID from produk where MerchantID=".$id;
+			return $this->db->query($sql)->num_rows();
+		}
 	}
 ?>

@@ -42,5 +42,9 @@
 <script src="<?php echo $base_url; ?>dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $base_url; ?>dist/js/demo.js"></script>
+
+<script src="<?php echo $base_url; ?>plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo $base_url; ?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo $base_url; ?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
 </body>
 </html>

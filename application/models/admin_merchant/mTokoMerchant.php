@@ -54,5 +54,23 @@
 			$sql = "select * from ".$this->table_name." where ".$this->primary_key." ='".$id."' ";
 			return $this->db->query($sql);
 		}
+
+		function get_kotaTokoMerchant($id){ // mendapatkan jumlah toko merchant per kota
+			$sql = "select Kota, COUNT(TokoID) as Jumlah 
+					from toko_merchant 
+					where MerchantID='".$id."'
+					group by Kota order by Jumlah desc";
+			return $this->db->query($sql);
+		}
+
+		function get_transaksiToko($id){ // mendapatkan jumlah transaksi per toko merchant
+			$sql = "select transaksi.TokoID, count(transaksi.TokoID) as jumlahTransaksi
+					from transaksi, toko_merchant 
+					where transaksi.TokoID = toko_merchant.TokoID and 
+					toko_merchant.MerchantID = '".$id."' 
+					group by transaksi.TokoID 
+					order by jumlahTransaksi desc";
+			return $this->db->query($sql);
+		}
 	}
 ?>

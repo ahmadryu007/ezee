@@ -72,7 +72,7 @@
 				'Aksi');
 			$i=0 + $offset;
 			foreach ($proudk as $c) {
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->ProdukID.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->ProdukID.'" onchange="cek()">', 
 					++$i, $c->ProdukID, $c->NamaKategori,
 					$c->NamaProduk, $c->KuantitasPerUnit, $c->HargaPerUnit,
 					'<a href="'.$this->config->item('base_url').'index.php/merchantProduk/updateProduk/'.$c->ProdukID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -91,9 +91,21 @@
 			else
 				$data['message'] = '';
 
-			//============================================
-			//data jumlah produk merchant
+			// ============================================
+			// data jumlah produk merchant
 			$data['jumlahProduk'] = $this->mProdukMerchant->count_all($this->user['id']);
+
+			// ============================================
+			// data produk paling diminati pria
+			$data['highProdukPria'] = $this->mProdukMerchant->get_highProdukPria($this->user['id']);
+
+			// ============================================
+			// data produk paling diminati wanita
+			$data['highProdukWanita'] = $this->mProdukMerchant->get_highProdukWanita($this->user['id']);
+
+			// ============================================
+			// data jumlah kategori produk merchant
+			$data['jumlahKategoriProduk'] = $this->mProdukMerchant->get_jumlahKategoriProduk($this->user['id']);
 
 			$this->load->view('admin_merchant/header', $data);
 			$this->load->view('admin_merchant/dataProduk', $data);
@@ -122,17 +134,29 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mProdukMerchant->get_all_data($this->user['id'])->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mKartu->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mProdukMerchant->count_all($this->user['id']);
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mProdukMerchant->get_by_id($id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);
 		    $this->cezpdf->ezStream();
+		}
+
+		function addProduk(){
+			$data['base_url'] = $this->config->item('base_url');
+
+			$this->load->view('admin_merchant/header', $data);
+			$this->load->view('admin_merchant/addMerchantProduk', $data);
+			$this->load->view('admin_merchant/footer', $data);
 		}
 	}
 ?>

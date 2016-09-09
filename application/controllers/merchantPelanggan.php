@@ -71,7 +71,7 @@
 				'Aksi');
 			$i=0 + $offset;
 			foreach ($cust as $c) {
-				$this->table->add_row( '<input type="checkbox" name="'.$i.'" value="'.$c->PelangganID.'" onchange="cek()">', 
+				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->PelangganID.'" onchange="cek()">', 
 					++$i, $c->PelangganID, $c->Nama,
 					$c->Alamat, $c->Kota, 
 					'<a href="'.$this->config->item('base_url').'index.php/merchantPelanggan/updateKartu/'.$c->PelangganID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
@@ -121,13 +121,17 @@
 		function download_pdf(){
 			$this->load->library('cezpdf');
 		    $db_data = array();
-		    $db_data = $this->mPelangganMerchant->get_all_data($this->user['id'])->result_array();
-		    $jumlah = $this->input->get('jumlah');
-		    $idx=0;
-		    for($i=0;$i<$jumlah;$i++){
-		    	$idx++;
-		    	$db_data[] = $this->mKartu->get_by_id($this->input->get($idx))->row_array();
+		    $row_data = array();
+		    $jumlah = $this->mPelangganMerchant->count_all($this->user['id']);
+
+		    for($i=0;$i <= $jumlah; $i++){
+		    	$id = '';
+		    	$id = $this->input->post('ck'.$i);
+		    	if ($id != '')
+		    		$row_data[] = $this->mPelangganMerchant->get_by_id($this->user['id'], $id)->row_array();
 		    }
+
+		    $db_data = $row_data;
 
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);

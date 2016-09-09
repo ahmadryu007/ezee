@@ -113,17 +113,7 @@
 
             <!--  <table id="example1" class="table table-bordered table-striped">
               </table> -->
-              <label><?php //echo $message; ?></label>
               <br />
-              <form action="<?php echo $base_url;?>index.php/transaksi/download_pdf" method="get">
-                <div class="col-md-6">
-                  <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
-                  <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/transaksi/download_csv" class="btn btn-info">
-                    <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
-                  </a>
-                </div>
-                </form>
                 <form action="<?php echo $base_url;?>index.php/transaksi" method="post">
                   <div class="col-md-6">
                     <label>Tampilkan Per</label>
@@ -135,9 +125,17 @@
                     <label>Data</label>
                     <input type="submit" class="btn btn-default" value="Ok">
                   </div>
-                  <br />
-                  <div><?php echo $table;?></div>
                 </form>
+
+                <form action="<?php echo $base_url;?>index.php/transaksi/download_pdf" method="post">
+                    <input type="text" id="jumlah" name="jumlah" value=0 size=5 onchange="cek()" disabled>
+                    <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
+                    <a href="<?php echo $base_url;?>index.php/transaksi/download_csv" class="btn btn-info">
+                      <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
+                    </a>
+                    <br />
+                    <div><?php echo $table;?></div>
+                  </form>
 
               <script type="text/javascript">
               function clickAll(){

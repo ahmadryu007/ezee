@@ -14,10 +14,18 @@
 				$searchField = $this->primary_key;
 
 			if(empty($order_column) || empty($order_type) || empty($search))
-				$this->db->order_by($this->primary_key, 'asc');
-			else
-				$this->db->order_by($order_column, $order_type);
+			{
+				$this->db->join('transaksi_detail', 'transaksi.TransaksiID = transaksi_detail.TransaksiID');
+				$this->db->join('toko_merchant', 'transaksi.TokoID = toko_merchant.TokoID');
+				$this->db->join('produk', 'transaksi_detail.ProdukID = produk.ProdukID');
+				$this->db->order_by('TanggalTransaksi', 'desc');
+			}else{
+				$this->db->join('transaksi_detail', 'transaksi.TransaksiID = transaksi_detail.TransaksiID');
+				$this->db->join('toko_merchant', 'transaksi.TokoID = toko_merchant.TokoID');
+				$this->db->join('produk', 'transaksi_detail.ProdukID = produk.ProdukID');
+				$this->db->order_by('TanggalTransaksi', 'desc');
 				$this->db->like($searchField, $search);
+			}
 			return $this->db->get($this->table_name, $limit, $offset);
 		}
 
@@ -26,7 +34,27 @@
 		}
 
 		function get_all_data(){
-			$sql = "select * from ".$this->table_name;
+			$sql = "select transaksi.TransaksiID, transaksi.TokoID, transaksi.TanggalTransaksi, 
+					merchant.Nama as NamaMerchant, produk.NamaProduk, transaksi_detail.Kuantitas, 
+					transaksi_detail.Diskon, toko_merchant.Alamat, toko_merchant.Kota
+					from transaksi, transaksi_detail, produk, toko_merchant, merchant
+					where transaksi.TransaksiID = transaksi_detail.TransaksiID and 
+					transaksi_detail.ProdukID = produk.ProdukID and 
+					transaksi.TokoID = toko_merchant.TokoID and 
+					toko_merchant.MerchantID = merchant.MerchantID order by TanggalTransaksi desc";
+			return $this->db->query($sql);
+		}
+
+		function get_by_id($id){
+			$sql = "select transaksi.TransaksiID, transaksi.TokoID, transaksi.TanggalTransaksi, 
+					merchant.Nama as NamaMerchant, produk.NamaProduk, transaksi_detail.Kuantitas, 
+					transaksi_detail.Diskon, toko_merchant.Alamat, toko_merchant.Kota
+					from transaksi, transaksi_detail, produk, toko_merchant, merchant
+					where transaksi.TransaksiID = transaksi_detail.TransaksiID and 
+					transaksi_detail.ProdukID = produk.ProdukID and 
+					transaksi.TokoID = toko_merchant.TokoID and 
+					toko_merchant.MerchantID = merchant.MerchantID 
+					and transaksi.TransaksiID=".$id." order by TanggalTransaksi desc ";
 			return $this->db->query($sql);
 		}
 

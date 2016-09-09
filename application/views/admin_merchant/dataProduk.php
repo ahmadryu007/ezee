@@ -11,6 +11,65 @@
       </ol>
     </section>
     <section class="content">
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-cubes"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Produk</span>
+              <span class="info-box-number"><?php echo $jumlahProduk; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-gray"><i class="fa fa-clone"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Kategori </span>
+              <span class="info-box-text">Produk</span>
+              <span class="info-box-number"><?php echo $jumlahKategoriProduk;?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-male"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Produk Paling Diminati </span>
+              <span class="info-box-text">Pria</span>
+              <span class="info-box-number"><?php echo $highProdukPria; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-female"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Produk Paling Diminati </span>
+              <span class="info-box-text">Wanita</span>
+              <span class="info-box-number"><?php echo $highProdukWanita; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+      </div>
+      <!-- /.row -->
       
 
       <div class="row">
@@ -58,16 +117,7 @@
               </table> -->
               <label><?php echo $message; ?></label>
               <br />
-              <form action="<?php echo $base_url;?>index.php/merchantProduk/download_pdf" method="get">
-                <div class="col-md-6">
-                  <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
-                  <input type="text" id="jumlah" name="jumlah" value=0 size=5 disabled>
-                  <a href="<?php echo $base_url;?>index.php/merchantProduk/download_csv" class="btn btn-info">
-                    <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
-                  </a>
-                </div>
-                </form>
-                <form action="<?php echo $base_url;?>index.php/merchantProduk" method="post">
+              <form action="<?php echo $base_url;?>index.php/merchantProduk" method="post">
                   <div class="col-md-6">
                     <label>Tampilkan Per</label>
                       <select name="limit">
@@ -78,9 +128,17 @@
                     <label>Data</label>
                     <input type="submit" class="btn btn-default" value="Ok">
                   </div>
-                  <br />
-                  <div><?php echo $table;?></div>
                 </form>
+
+                <form action="<?php echo $base_url;?>index.php/merchantProduk/download_pdf" method="post">
+                    <input type="text" id="jumlah" name="jumlah" value=0 size=5 onchange="cek()" disabled>
+                    <input type="submit" id="import" class="btn btn-warnig" value="Export Data yang Dipilih Ke File PDF">
+                    <a href="<?php echo $base_url;?>index.php/merchantProduk/download_csv" class="btn btn-info">
+                      <i class="fa fa-file-excel-o">&nbsp;&nbsp;Export Semua Data Ke File .XLS</i>
+                    </a>
+                    <br />
+                    <div><?php echo $table;?></div>
+               </form>
                 
               <script type="text/javascript">
               function clickAll(){
