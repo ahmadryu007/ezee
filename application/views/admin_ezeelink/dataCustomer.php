@@ -194,9 +194,6 @@
         </div>
         <!-- /.col -->
 
-        <script type="text/javascript" src="<?php echo $base_url;?>assets/jquery.js"></script>
-        <script type="text/javascript" src="<?php echo $base_url;?>assets/Chart.js"></script>
-
         <div class="col-md-6" id="analisis">
           <!-- PIE CHART -->
           <div class="box box-info">
@@ -255,9 +252,11 @@
               </div>
             </div>
             <div class="box-body">
-              <div class="col-md-3">
+              <!--
+              <div class="col-md-6">
                 <div id="umurLegend"></div>
               </div>
+            -->
               <div class="chart">
                 <canvas id="umurChart" style="height:250px"></canvas>
               </div>
@@ -351,11 +350,11 @@
                                       label: ""
                                   }
                               ]
-                // doughnat
+                
                 var ctx6 = document.getElementById('umurChart').getContext("2d");
                 var chart6 = new Chart(ctx6).Pie(data6, {
                   //String - A legend template
-                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span><br /><%}%></ul>"
+                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span><%}%></ul>"
                 });
                 document.getElementById("umurLegend").innerHTML = chart6.generateLegend();
               });

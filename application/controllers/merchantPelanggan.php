@@ -73,7 +73,8 @@
 			foreach ($cust as $c) {
 				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->PelangganID.'" onchange="cek()">', 
 					++$i, $c->PelangganID, $c->Nama,
-					$c->Alamat, $c->Kota, 
+					$c->Alamat, $c->Kota,
+					'<a href="'.$this->config->item('base_url').'index.php/customers/profileCustomer/'.$c->PelangganID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'. 
 					'<a href="'.$this->config->item('base_url').'index.php/merchantPelanggan/updateKartu/'.$c->PelangganID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('merchantPelanggan/delete/'.$c->PelangganID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Kartu Ini ?')"))
 					);
@@ -90,20 +91,41 @@
 			else
 				$data['message'] = '';
 
-			//============================================
-			//data jumlah pelanggan merchant
+			// ============================================
+			// data jumlah pelanggan merchant
 			$data['jumlahPelanggan'] = $this->mPelangganMerchant->count_all($this->user['id']);
+
+			// =============================================
+			// data jumlah pelanggan merchant pria
+			$data['customerPria'] = $this->mPelangganMerchant->get_customerPria();
+
+			// =============================================
+			// data jumlah pelanggan merchant wanita
+			$data['customerWanita'] = $this->mPelangganMerchant->get_customerWanita();
+
+			// =============================================
+			// data kota dengan customer terbanyak
+			$data['highCity'] = $this->mPelangganMerchant->get_city($this->user['id'])->first_row();
+
+			// =============================================
+			// data jumlah pelanggan perkota (chart)
+			$data['customerKota'] = $this->mPelangganMerchant->get_city($this->user['id'])->result();
+
+			// =============================================
+			// data group umur pelanggan
+			$data['groupUmur'] = $this->mPelangganMerchant->get_groupUmur($this->user['id'])->result();
 
 			$this->load->view('admin_merchant/header', $data);
 			$this->load->view('admin_merchant/dataPelanggan', $data);
 			$this->load->view('admin_merchant/footer', $data);
+
 		}
 
 		function download_csv(){
 			$this->load->model('admin_merchant/mPelangganMerchant');
     		$this->load->dbutil();
     		$this->load->helper('file');
-    
+     
     		$report = $this->mPelangganMerchant->get_all_data($this->user['id']);
 
     		$delimiter = ",";

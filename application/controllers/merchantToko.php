@@ -77,6 +77,7 @@
 				$this->table->add_row( '<input type="checkbox" name="ck'.$i.'" value="'.$c->TokoID.'" onchange="cek()">', 
 					++$i, $c->TokoID, $c->Alamat,
 					$c->Kota, $c->Provinsi, $c->Telepon, $c->Email, $c->TanggalInput,
+					'<a href="'.$this->config->item('base_url').'index.php/merchantToko/profileToko/'.$c->TokoID.'" class="btn btn-info">Profil</a>'.'&nbsp;&nbsp;&nbsp;'.
 					'<a href="'.$this->config->item('base_url').'index.php/merchantToko/updateToko/'.$c->TokoID.'"><span class="glyphicon glyphicon-pencil"></span></a>'.'&nbsp;&nbsp;&nbsp;'.
 					anchor('merchantToko/delete/'.$c->TokoID, '<span class="glyphicon glyphicon-remove">', array('onclick' => "return confirm('Apakah Anda Yakin Ingin Menghapus Data Kartu Ini ?')"))
 					);
@@ -104,6 +105,10 @@
 			// ============================================
 			// data toko dengan transaksi tebanyak
 			$data['highStore'] = $this->mTokoMerchant->get_transaksiToko($this->user['id'])->first_row()->TokoID;
+
+			// ============================================
+			// data jumlah toko per kota
+			$data['kotaToko'] = $this->mTokoMerchant->get_kotaTokoMerchant($this->user['id'])->result();
 
 
 			$this->load->view('admin_merchant/header',$data);
@@ -148,6 +153,99 @@
 		    $col_names = array();
 		    $this->cezpdf->ezTable($db_data);
 		    $this->cezpdf->ezStream();
+		}
+
+		function addToko(){
+			$data['base_url'] = $this->config->item('base_url');
+			$data['newId'] = $this->mTokoMerchant->get_all_data($this->user['id'])->last_row()->TokoID + 1;
+
+			$this->load->view('admin_merchant/header', $data);
+			$this->load->view('admin_merchant/addMerchantToko', $data);
+			$this->load->view('admin_merchant/footer', $data);
+		}
+
+		function addSubmit(){
+			$data = array( //'TokoID' => $this->input->post('TokoID'),
+				'MerchantID' => $this->user['id'],
+				'Alamat' => $this->input->post('Alamat'), 
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'), 
+				'Telepon' => $this->input->post('Telepon'),
+				'Email' => $this->input->post('Email'), 
+				'TanggalInput' => $this->input->post('TanggalInput')
+				);
+			$this->mTokoMerchant->save($data);
+			redirect('merchantToko/index/add_success', 'refresh');
+		}
+
+		function delete($id){
+			$this->mTokoMerchant->delete($id);
+			redirect('merchantToko/index/delete_success', 'refresh');
+		}
+
+		function updateToko($id){
+			$data['base_url'] = $this->config->item('base_url');
+			$data['store'] = $this->mTokoMerchant->get_by_id($id)->row();
+
+			$this->load->view('admin_merchant/header', $data);
+			$this->load->view('admin_merchant/updateMerchantToko', $data);
+			$this->load->view('admin_merchant/footer', $data);
+		}
+
+		function updateSubmit($id){
+			$data = array( 'MerchantID' => $this->user['id'],
+				'Alamat' => $this->input->post('Alamat'), 
+				'Kota' => $this->input->post('Kota'),
+				'Provinsi' => $this->input->post('Provinsi'), 
+				'Telepon' => $this->input->post('Telepon'),
+				'Email' => $this->input->post('Email')
+				);
+
+			$this->mTokoMerchant->update($id, $data);
+			redirect('merchantToko/index/update_success', 'refresh');
+		}
+
+		function profileToko($id){
+			$data['base_url'] = $this->config->item('base_url');
+			$data['toko'] = $this->mTokoMerchant->get_by_id($id)->row();
+
+			// ==================================================
+			// data table histori transaksi merchant
+			$historiTransaksi = $this->mTokoMerchant->get_historiTransaksi($id)->result();
+			$this->load->library('table');
+			$config['attributes']['rel'] = FALSE;
+			$template = array(
+        				'table_open'            => '<table class="table table-bordered table-striped">',
+        				'table_close'           => '</table>'
+			);
+
+			$this->table->set_template($template);
+
+			$this->table->set_empty(" ");
+			$this->table->set_heading(' ','No Kartu','Tanggal', 'Jumlah Bayar(Rp.)','Nama Produk','Tempat');
+			$i=0;
+			foreach ($historiTransaksi as $c) {
+				$jumlah = $c->HargaPerUnit * $c->Kuantitas;
+				$jumlahBayar = $jumlah - ($jumlah * $c->Diskon);
+				$this->table->add_row(++$i, $c->NoKartu,
+					$c->TanggalTransaksi, $jumlahBayar , $c->NamaProduk,
+					$c->Alamat.', '.$c->Kota 
+					);
+			}
+
+			$data['historiTransaksi'] = $this->table->generate();
+
+			// ==================================================
+			// data jumlah transaksi merchant
+			$data['jumlahTransaksi'] = $i;
+
+			// ==================================================
+			// data rating toko merchant
+			$data['ratingToko'] = $this->mTokoMerchant->get_ratingToko($this->user['id'], $i);
+
+			$this->load->view('admin_merchant/header', $data);
+			$this->load->view('admin_merchant/profileToko', $data);
+			$this->load->view('admin_merchant/footer', $data);
 		}
 	}
 ?>

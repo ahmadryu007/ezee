@@ -58,11 +58,11 @@
 			return $this->db->query($sql);
 		}
 
-		function get_transaksiPerbulan($tahun=1998){
+		function get_transaksiPerbulan($tahun=''){
 			$sql = "";
 			if(empty($tahun))
 				$sql = "select MONTH(TanggalTransaksi)as Bulan, COUNT(TanggalTransaksi)as Jumlah 
-						from transaksi where year(TanggalTransaksi) = 1998 group by MONTH(TanggalTransaksi)";
+						from transaksi where year(TanggalTransaksi) = ".date('Y')." group by MONTH(TanggalTransaksi)";
 			else
 				$sql = "select MONTH(TanggalTransaksi)as Bulan, COUNT(TanggalTransaksi)as Jumlah 
 						from transaksi where year(TanggalTransaksi) = ".$tahun." group by MONTH(TanggalTransaksi)";

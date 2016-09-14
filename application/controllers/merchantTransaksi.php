@@ -7,7 +7,7 @@
 
 			$this->load->library(array('table', 'form_validation'));
 			$this->load->helper(array('form', 'url', 'text'));
-			$this->load->model('admin_merchant/mTransaksiMerchant', '', true);
+			$this->load->model('admin_merchant/mTransaksiMerchantMerchant', '', true);
 			$this->file_path = realpath(APPPATH . '../assets');
 
 			if (empty($this->session->userdata('user'))){
@@ -29,19 +29,19 @@
 			$data['base_url'] = $this->config->item('base_url');
 
 			if(!empty($search))
-				$this->limit = $this->mTransaksiMerchant->count_all($this->user['id']);
+				$this->limit = $this->mTransaksiMerchantMerchant->count_all($this->user['id']);
 
 			if (empty($offset)) $offset = 0;
 			if (empty($order_column)) $order_column = 'TransaksiID';
 			if (empty($order_type)) $order_type = 'asc';
 
-			$transaksi = $this->mTransaksiMerchant->get_paged_list($this->user['id'],$this->limit, $offset, 
+			$transaksi = $this->mTransaksiMerchantMerchant->get_paged_list($this->user['id'],$this->limit, $offset, 
 				$order_column, $order_type, $search, $searchField)->result();
 
 			// generate pagination
 			$this->load->library('pagination');
 			$config['base_url'] = site_url('merchantTransaksi/index/');
-			$config['total_rows'] = $this->mTransaksiMerchant->count_all($this->user['id']);
+			$config['total_rows'] = $this->mTransaksiMerchantMerchant->count_all($this->user['id']);
 			$config['per_page'] = $this->limit;
 			$config['uri_segment'] = 3;
 			$config['first_link'] = 'Awal';
@@ -92,11 +92,71 @@
 			else
 				$data['message'] = '';
 
+			// ===================================================================
+			// data jumlah transaksi perbulan (chart)
+			$selectTahun = $this->input->post('s');
+			if (empty($selectTahun)){
+				$transaksiPerBulan = $this->mTransaksiMerchant->get_transaksiPerbulan($id)->result();
+				$data['selectTahun'] = date('Y');
+			}else{
+				$transaksiPerBulan = $this->mTransaksiMerchant->get_transaksiPerbulan($id, $selectTahun)->result();
+				$data['selectTahun'] = $selectTahun;
+			}
+			$jumlah = array();
+			foreach ($transaksiPerBulan as $t) {
+				$jumlah[] = $t->Jumlah;
+			}
+
+			$bulan = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 
+				'Oktober', 'November', 'Desember');
+
+			$label = array();
+			foreach ($transaksiPerBulan as $t) {
+				$label[] = $bulan[$t->Bulan - 1];
+			}
+
+			$data['transaksiPerBulan'] = json_encode($jumlah);
+			$data['labelPerBulan'] = json_encode($label);
+			$data['tahun'] = $this->mTransaksiMerchant->get_tahun()->result();
+
+			// end data jumlah transaksi perbulan (chart)
+
+			// ===================================================================
+			// data jumlah transaksi Per-Nama hari
+			$selectTahun2 = $this->input->post('sTahunHari');
+			$data['selectTahun2'] = $selectTahun2;
+			$selectBulanHari = $this->input->post('sBulanHari');
+			$data['selectBulanHari'] = $selectBulanHari;
+			if (empty($selectTahun2) || empty($selectBulanHari))
+				$groupHariTransaksi = $this->mTransaksiMerchant->get_groupHariTransaksi()->result();
+			else
+				$groupHariTransaksi = $this->mTransaksiMerchant->get_groupHariTransaksi($selectBulanHari, $selectTahun2)->result();
+
+			$hari = array();
+			foreach ($groupHariTransaksi as $h) {
+				$hari[] = $h->Hari;
+			}
+
+			$hariJumlah = array(); // jumlah transaksi per nama hari
+			foreach ($groupHariTransaksi as $h) {
+				$hariJumlah[] = $h->Jumlah;
+			}
+
+			$data['hari'] = json_encode($hari);
+			$data['hariJumlah'] = json_encode($hariJumlah);
+
+			// end data jumlah transaksi Per-Nama hari
+
+			// ==================================================================
+			// data jumlah transaksi bulan sekarang
+			$data['jumlahTransaksiBulanIni'] = $this->mTransaksiMerchant->get_jumlahTransaksiBulanIni()->row();
+			// -------
+
 			//============================================
 			//data jumlah transaksi merchant
-			$data['jumlahTransaksi'] = $this->mTransaksiMerchant->count_all($this->user['id']);
+			$data['jumlahTransaksi'] = $this->mTransaksiMerchantMerchant->count_all($this->user['id']);
 
-			$transaksi = $this->mTransaksiMerchant->get_paged_list($this->user['id'],$this->limit, $offset, 
+			$transaksi = $this->mTransaksiMerchantMerchant->get_paged_list($this->user['id'],$this->limit, $offset, 
 				$order_column, $order_type, $search, $searchField)->result();
 
 
@@ -105,11 +165,11 @@
 			$this->load->view('admin_merchant/footer',$data);
 		}
 		function download_csv(){
-			$this->load->model('admin_merchant/mTransaksiMerchant');
+			$this->load->model('admin_merchant/mTransaksiMerchantMerchant');
     		$this->load->dbutil();
     		$this->load->helper('file');
     
-    		$report = $this->mTransaksiMerchant->get_all_data($this->user['id']);
+    		$report = $this->mTransaksiMerchantMerchant->get_all_data($this->user['id']);
 
     		$delimiter = ",";
     		$newline = "\r\n";
@@ -127,13 +187,13 @@
 			$this->load->library('cezpdf');
 		    $db_data = array();
 		    $row_data = array();
-		    $jumlah = $this->mTransaksiMerchant->count_all($this->user['id']);
+		    $jumlah = $this->mTransaksiMerchantMerchant->count_all($this->user['id']);
 
 		    for($i=0;$i <= $jumlah; $i++){
 		    	$id = '';
 		    	$id = $this->input->post('ck'.$i);
 		    	if ($id != '')
-		    		$row_data[] = $this->mTransaksiMerchant->get_by_id($this->user['id'], $id)->row_array();
+		    		$row_data[] = $this->mTransaksiMerchantMerchant->get_by_id($this->user['id'], $id)->row_array();
 		    }
 
 		    $db_data = $row_data;

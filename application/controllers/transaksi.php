@@ -79,7 +79,7 @@
 			$selectTahun = $this->input->post('s');
 			if (empty($selectTahun)){
 				$transaksiPerBulan = $this->mTransaksi->get_transaksiPerbulan()->result();
-				$data['selectTahun'] = 1998;
+				$data['selectTahun'] = date('Y');
 			}else{
 				$transaksiPerBulan = $this->mTransaksi->get_transaksiPerbulan($selectTahun)->result();
 				$data['selectTahun'] = $selectTahun;

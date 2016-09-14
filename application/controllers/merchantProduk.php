@@ -107,6 +107,10 @@
 			// data jumlah kategori produk merchant
 			$data['jumlahKategoriProduk'] = $this->mProdukMerchant->get_jumlahKategoriProduk($this->user['id']);
 
+			// ============================================
+			// data jumlah produk per kategori
+			$data['kategoriProduk'] = $this->mProdukMerchant->get_kategoriProduk()->result();
+
 			$this->load->view('admin_merchant/header', $data);
 			$this->load->view('admin_merchant/dataProduk', $data);
 			$this->load->view('admin_merchant/footer', $data);
@@ -153,10 +157,57 @@
 
 		function addProduk(){
 			$data['base_url'] = $this->config->item('base_url');
+			$sql = "select ProdukID from produk order by ProdukID desc";
+			$data['newId'] = $this->db->query($sql)->first_row()->ProdukID + 1;
+			$sql2 = "select * from kategori_produk";
+			$data['kategoriProduk'] = $this->db->query($sql2)->result();
 
 			$this->load->view('admin_merchant/header', $data);
 			$this->load->view('admin_merchant/addMerchantProduk', $data);
 			$this->load->view('admin_merchant/footer', $data);
+		}
+
+		function addSubmit(){
+			$data = array('NamaProduk' => $this->input->post('NamaProduk'),
+				'KategoriID' => $this->input->post('KategoriID'),
+				'HargaPerUnit' => $this->input->post('HargaPerUnit'),
+				'KuantitasPerUnit' => $this->input->post('KuantitasPerUnit'),
+				'MerchantID' => $this->user['id']
+				);
+			$this->mProdukMerchant->save($data);
+			redirect('merchantProduk/index/add_success');
+		}
+
+		function updateProduk($id){
+			$data['base_url'] = $this->config->item('base_url');
+
+			$sql = "select ProdukID from produk order by ProdukID desc";
+			$data['newId'] = $this->db->query($sql)->first_row()->ProdukID + 1;
+			$sql2 = "select * from kategori_produk";
+
+			$data['kategoriProduk'] = $this->db->query($sql2)->result();
+			$data['dataProduk'] = $this->mProdukMerchant->get_by_id($id)->row();
+
+
+			$this->load->view('admin_merchant/header', $data);
+			$this->load->view('admin_merchant/updateMerchantProduk', $data);
+			$this->load->view('admin_merchant/footer', $data);
+		}
+
+		function updateSubmit($id){
+			$data = array('NamaProduk' => $this->input->post('NamaProduk'),
+				'KategoriID' => $this->input->post('KategoriID'),
+				'HargaPerUnit' => $this->input->post('HargaPerUnit'),
+				'KuantitasPerUnit' => $this->input->post('KuantitasPerUnit'),
+				'MerchantID' => $this->user['id']
+				);
+			$this->mProdukMerchant->update($id, $data);
+			redirect('merchantProduk/index/update_success');
+		}
+
+		function delete($id){
+			$this->mProdukMerchant->delete($id);
+			redirect('merchantProduk/index/delete_success', 'refresh');
 		}
 	}
 ?>

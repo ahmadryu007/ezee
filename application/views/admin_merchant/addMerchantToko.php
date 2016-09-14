@@ -4,11 +4,11 @@
     <section class="content-header">
       <h1>
         Tambah Data
-        <small>Produk</small>
+        <small>Toko</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Data Produk</a></li>
+        <li><a href="#">Data Toko</a></li>
         <li class="active">Tambah Data</li>
       </ol>
     </section>
@@ -21,37 +21,41 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Data Produk</h3>
+              <h3 class="box-title">Data Toko</h3>
             </div>
             <!-- /.box-header -->
 
             <!-- form start -->
-            <form role="form" action="<?php echo $base_url;?>index.php/merchantProduk/addSubmit" method="post">
+            <form role="form" action="<?php echo $base_url;?>index.php/merchantToko/addSubmit" method="post">
               <div class="box-body">
                 <div class="form-group">
-                  <label>Produk ID</label>
-                  <input type="text" class="form-control" name="ProdukID" value="<?php echo $newId; ?>" disabled>
+                  <label>Toko ID</label>
+                  <input type="text" class="form-control" name="TokoID" value="<?php echo $newId; ?>" disabled>
                 </div>
                 <div class="form-group">
-                  <label>Kategori</label>
-                  <select name="KategoriID" class="form-control">
-                    <?php
-                      foreach($kategoriProduk as $k)
-                        echo '<option value='.$k->KategoriID.'>'.$k->KategoriID.' || '.$k->NamaKategori.'</option>';
-                    ?>
-                  </select>
+                  <label>Alamat</label>
+                  <input type="text" class="form-control" name="Alamat" placeholder="Alamat">
                 </div>
                 <div class="form-group">
-                  <label>Nama Produk</label>
-                  <input type="text" class="form-control" name="NamaProduk" placeholder="Nama Produk">
+                  <label>Kota</label>
+                  <input type="text" class="form-control" name="Kota" placeholder="Kota">
                 </div>
                 <div class="form-group">
-                  <label>Kuantitas Per-Unit</label>
-                  <input type="text" class="form-control" name="KuantitasPerUnit" placeholder="Kuantitas Per-Unit">
+                  <label>Provinsi</label>
+                  <input type="text" class="form-control" name="Provinsi" placeholder="Provinsi">
                 </div>
                 <div class="form-group">
-                  <label>Harga Per-Unit</label>
-                  <input type="text" class="form-control" id="number" name="HargaPerUnit" placeholder="Harga Per-Unit" data-mask>
+                  <label>Telepon</label>
+                  <input type="text" class="form-control" name="Telepon" placeholder="Telepon" data-mask>
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" class="form-control" name="Email" placeholder="Email">
+                </div>
+                <br />
+                <div class="form-group">
+                  <label>Tanggal Input : <?php echo date('Y-d-m h:m:s'); ?></label>
+                  <input type="hidden" class="form-control" name="TanggalInput" value="<?php echo date('Y-m-d h:m:s'); ?>">
                 </div>
                 
               <!-- /.box-body -->

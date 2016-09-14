@@ -3,13 +3,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Tambah Data
-        <small>Produk</small>
+        Edit Data
+        <small>Toko</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Data Produk</a></li>
-        <li class="active">Tambah Data</li>
+        <li><a href="#">Data Toko</a></li>
+        <li class="active">Edit Data</li>
       </ol>
     </section>
 
@@ -21,37 +21,40 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Data Produk</h3>
+              <h3 class="box-title">Data Toko</h3>
             </div>
             <!-- /.box-header -->
 
             <!-- form start -->
-            <form role="form" action="<?php echo $base_url;?>index.php/merchantProduk/addSubmit" method="post">
+            <form role="form" action="<?php echo $base_url;?>index.php/merchantToko/updateSubmit/<?php echo $store->TokoID; ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
-                  <label>Produk ID</label>
-                  <input type="text" class="form-control" name="ProdukID" value="<?php echo $newId; ?>" disabled>
+                  <label>Toko ID</label>
+                  <input type="text" class="form-control" name="TokoID" value="<?php echo $store->TokoID; ?>" disabled>
                 </div>
                 <div class="form-group">
-                  <label>Kategori</label>
-                  <select name="KategoriID" class="form-control">
-                    <?php
-                      foreach($kategoriProduk as $k)
-                        echo '<option value='.$k->KategoriID.'>'.$k->KategoriID.' || '.$k->NamaKategori.'</option>';
-                    ?>
-                  </select>
+                  <label>Alamat</label>
+                  <input type="text" class="form-control" name="Alamat" value="<?php echo $store->Alamat; ?>">
                 </div>
                 <div class="form-group">
-                  <label>Nama Produk</label>
-                  <input type="text" class="form-control" name="NamaProduk" placeholder="Nama Produk">
+                  <label>Kota</label>
+                  <input type="text" class="form-control" name="Kota" value="<?php echo $store->TokoID; ?>">
                 </div>
                 <div class="form-group">
-                  <label>Kuantitas Per-Unit</label>
-                  <input type="text" class="form-control" name="KuantitasPerUnit" placeholder="Kuantitas Per-Unit">
+                  <label>Provinsi</label>
+                  <input type="text" class="form-control" name="Provinsi" value="<?php echo $store->Provinsi; ?>">
                 </div>
                 <div class="form-group">
-                  <label>Harga Per-Unit</label>
-                  <input type="text" class="form-control" id="number" name="HargaPerUnit" placeholder="Harga Per-Unit" data-mask>
+                  <label>Telepon</label>
+                  <input type="text" class="form-control" name="Telepon" value="<?php echo $store->Telepon; ?>" data-mask>
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" class="form-control" name="Email" value="<?php echo $store->Email; ?>">
+                </div>
+                <br />
+                <div class="form-group">
+                  <label>Tanggal Input : <?php echo $store->TanggalInput; ?></label>
                 </div>
                 
               <!-- /.box-body -->

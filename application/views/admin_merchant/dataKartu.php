@@ -55,12 +55,6 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-      
-      <div class="row">
-        <div class="col-md-3">
-          <a href="<?php echo $base_url;?>index.php/merchantKartu/addKartu" class="btn btn-warning">Tambah Data</a>
-        </div>
-      </div>
 
       <br />
 

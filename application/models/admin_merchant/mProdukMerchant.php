@@ -14,10 +14,12 @@
 			
 			if(empty($order_column) || empty($order_type) || empty($search) || empty($searchField))
 			{
+				$this->db->select(array('ProdukID', 'NamaProduk', 'NamaKategori', 'KuantitasPerUnit', 'HargaPerUnit'));
 				$this->db->join('kategori_produk', 'produk.KategoriID = kategori_produk.KategoriID');
 				$this->db->where('MerchantID', $merchantID);
 				$this->db->order_by($this->primary_key, 'asc');
 			}else{
+				$this->db->select(array('ProdukID', 'NamaProduk', 'NamaKategori', 'KuantitasPerUnit', 'HargaPerUnit'));
 				$this->db->join('kategori_produk', 'produk.KategoriID = kategori_produk.KategoriID');
 				$this->db->where('MerchantID', $merchantID);
 				$this->db->order_by($order_column, $order_type);
@@ -32,14 +34,14 @@
 			return $this->db->query($sql)->row()->Jumlah;
 		}
 
-		function save($card){
-			$this->db->insert($this->table_name, $card);
+		function save($produk){
+			$this->db->insert($this->table_name, $produk);
 			return $this->db->insert_id();
 		}
 
-		function update($id, $card){
+		function update($id, $produk){
 			$this->db->where($this->primary_key, $id);
-			$this->db->update($this->table_name, $card);
+			$this->db->update($this->table_name, $produk);
 		}
 
 		function delete($id){
@@ -88,6 +90,13 @@
 		function get_jumlahKategoriProduk($id){
 			$sql = "select distinct KategoriID from produk where MerchantID=".$id;
 			return $this->db->query($sql)->num_rows();
+		}
+
+		function get_kategoriProduk(){ // mendapatkan jumlah produk per kategori
+			$sql = "select kategori_produk.NamaKategori, COUNT(produk.ProdukID) as Jumlah from produk, kategori_produk 
+					where kategori_produk.KategoriID = produk.KategoriID 
+					group by kategori_produk.NamaKategori";
+			return $this->db->query($sql);
 		}
 	}
 ?>

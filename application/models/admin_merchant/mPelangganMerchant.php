@@ -68,5 +68,39 @@
 					kartu.MerchantID =".$idMerchant." and pelanggan.PelangganID=".$idPelanggan;
 			return $this->db->query($sql);
 		}
+
+		function get_customerPria(){ // mendapatkan jumlah customer pria
+			$sql = "select COUNT(*) as Jumlah from pelanggan, kartu 
+					where kartu.PelangganID = pelanggan.PelangganID and 
+					kartu.MerchantID = 7941101100 and 
+					pelanggan.JenisKelamin like '%m%'";
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_customerWanita(){ // mendapatkan jumlah customer wanita
+			$sql = "select COUNT(*) as Jumlah from pelanggan, kartu 
+					where kartu.PelangganID = pelanggan.PelangganID and 
+					kartu.MerchantID = 7941101100 and 
+					pelanggan.JenisKelamin like '%f%'";
+			return $this->db->query($sql)->row()->Jumlah;
+		}
+
+		function get_city($id){ // mendapatkan jumlah customer per kota
+			$sql = "select Kota, count(pelanggan.PelangganID) as Jumlah from pelanggan, kartu 
+					where kartu.PelangganID = pelanggan.PelangganID and 
+					kartu.MerchantID = ".$id."
+					group by Kota order by Jumlah desc";
+			return $this->db->query($sql);
+		}
+
+		function get_groupUmur($id){
+			$sql = "select datediff(yy,TanggalLahir,getdate()) as Umur, 
+					COUNT(datediff(yy,TanggalLahir,getdate())) as Jumlah 
+					from pelanggan, kartu 
+					where kartu.PelangganID = pelanggan.PelangganID 
+					and kartu.MerchantID = ".$id."
+					group by datediff(yy,TanggalLahir,getdate()) order by Umur asc";
+			return $this->db->query($sql);
+		}
 	}
 ?>

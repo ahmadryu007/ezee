@@ -187,6 +187,72 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
+
+        <div class="col-md-6" id="analisis">
+          <!-- PIE CHART -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Chart Analisis Kota Toko</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="col-md-3">
+                <div id="pieLegend"></div>
+              </div>
+              <div class="chart">
+                <canvas id="pieChart" style="height:250px"></canvas>
+              </div>
+            </div>
+            </div>
+          <!-- /.box -->  
+        </div>
+
+        <script type="text/javascript" src="<?php echo $base_url;?>assets/jquery.js"></script>
+        <script type="text/javascript" src="<?php echo $base_url;?>assets/Chart.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+          
+          // ==============================================================
+          // pie chart data kota merchant
+
+                  var data = [ <?php
+                                    $i = 0;
+                                    $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                                    foreach($kategoriProduk as $c){
+                                      {
+                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+                                        $i++;
+                                        $dataPie = '{
+                                                      value: '.$c->Jumlah.',
+                                                      color:"'.$color.'",
+                                                      highlight: "'.$color.'",
+                                                      label: "'.$c->NamaKategori.'"
+                                                    },';
+                                        echo $dataPie;
+                                      }
+                                    }
+                                 ?>
+                                  {
+                                      value: 0,
+                                      color: "",
+                                      highlight: "",
+                                      label: ""
+                                  }
+                              ]
+
+                var ctx = document.getElementById("pieChart").getContext("2d");
+                var chart = new Chart(ctx).Pie(data, {
+                  //String - A legend template
+                  legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span><%}%></ul>"
+                });
+                document.getElementById("pieLegend").innerHTML = chart.generateLegend();
+        });
+        </script>
+
         </div>
 
 

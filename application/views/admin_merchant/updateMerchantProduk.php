@@ -3,13 +3,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Tambah Data
+        Edit Data
         <small>Produk</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Data Produk</a></li>
-        <li class="active">Tambah Data</li>
+        <li class="active">Edit Data</li>
       </ol>
     </section>
 
@@ -26,11 +26,11 @@
             <!-- /.box-header -->
 
             <!-- form start -->
-            <form role="form" action="<?php echo $base_url;?>index.php/merchantProduk/addSubmit" method="post">
+            <form role="form" action="<?php echo $base_url;?>index.php/merchantProduk/updateSubmit/<?php echo $dataProduk->ProdukID; ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
                   <label>Produk ID</label>
-                  <input type="text" class="form-control" name="ProdukID" value="<?php echo $newId; ?>" disabled>
+                  <input type="text" class="form-control" name="ProdukID" value="<?php echo $dataProduk->ProdukID; ?>" disabled>
                 </div>
                 <div class="form-group">
                   <label>Kategori</label>
@@ -43,15 +43,15 @@
                 </div>
                 <div class="form-group">
                   <label>Nama Produk</label>
-                  <input type="text" class="form-control" name="NamaProduk" placeholder="Nama Produk">
+                  <input type="text" class="form-control" name="NamaProduk" value="<?php echo $dataProduk->NamaProduk ?>">
                 </div>
                 <div class="form-group">
                   <label>Kuantitas Per-Unit</label>
-                  <input type="text" class="form-control" name="KuantitasPerUnit" placeholder="Kuantitas Per-Unit">
+                  <input type="text" class="form-control" name="KuantitasPerUnit" value="<?php echo $dataProduk->KuantitasPerUnit; ?>">
                 </div>
                 <div class="form-group">
                   <label>Harga Per-Unit</label>
-                  <input type="text" class="form-control" id="number" name="HargaPerUnit" placeholder="Harga Per-Unit" data-mask>
+                  <input type="text" class="form-control" id="number" name="HargaPerUnit" value="<?php echo $dataProduk->HargaPerUnit ?>" data-inputmask='"mask": "99999"' data-mask>
                 </div>
                 
               <!-- /.box-body -->
@@ -86,5 +86,6 @@
 
     //$('#number').inputmask("integer", {"placeholder": ""});
     $("[data-mask]").inputmask(({ mask: "[9][9][9][9][9][9][9][9][9][9][9][9][9][9][9][9]", greedy: false }));
+    
   });
 </script>

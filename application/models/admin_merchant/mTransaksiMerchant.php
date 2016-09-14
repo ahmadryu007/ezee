@@ -85,5 +85,27 @@
 					produk.MerchantID = '".$idMerchant."' and transaksi.TransaksiID=".$idTransaksi;
 			return $this->db->query($sql);
 		}
+
+		function get_transaksiPerbulan($id, $tahun=''){
+			$sql = "";
+			if(empty($tahun))
+				$sql = "select MONTH(TanggalTransaksi)as Bulan, COUNT(TransaksiID) as Jumlah
+						from transaksi, toko_merchant, merchant
+						where transaksi.TokoID = toko_merchant.TokoID and 
+						toko_merchant.MerchantID = merchant.MerchantID and 
+						merchant.MerchantID = ".$id." and 
+						YEAR(transaksi.TanggalTransaksi) = ".date('Y')." 
+						group by MONTH(TanggalTransaksi)";
+			else
+				$sql = "select MONTH(TanggalTransaksi)as Bulan, COUNT(TransaksiID) as Jumlah
+						from transaksi, toko_merchant, merchant
+						where transaksi.TokoID = toko_merchant.TokoID and 
+						toko_merchant.MerchantID = merchant.MerchantID and 
+						merchant.MerchantID = ".$id." and 
+						YEAR(transaksi.TanggalTransaksi) = ".$tahun." 
+						group by MONTH(TanggalTransaksi)";
+
+			return $this->db->query($sql);
+		}
 	}
 ?>

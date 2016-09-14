@@ -11,12 +11,68 @@
       </ol>
     </section>
     <section class="content">
-      
+
       <div class="row">
-        <div class="col-md-3">
-          <a href="<?php echo $base_url;?>index.php/merchantPelanggan/addPelanggan" class="btn btn-warning">Tambah Data</a>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah Pelanggan</span>
+              <span class="info-box-number"><?php echo $jumlahPelanggan; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
         </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Kota Dengan</span>
+              <span class="info-box-text">Pelanggan Terbanyak</span>
+              <span class="info-box-number">
+                <?php
+                  echo $highCity->Kota;
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-male"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah </span>
+              <span class="info-box-text">Pelanggan Pria</span>
+              <span class="info-box-number"><?php echo $customerPria; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-female"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Jumlah </span>
+              <span class="info-box-text">Pelanggan Wanita </span>
+              <span class="info-box-number"><?php echo $customerWanita; ?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
       </div>
+      <!-- /.row -->
 
       <br />
 
@@ -126,6 +182,129 @@
           </div>
           <!-- /.box -->
         </div>
+
+         <div class="col-md-6" id="analisis">
+          <!-- PIE CHART -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Analisis Data Kota Pelanggan</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="col-md-3">
+                <div id="doughnatLegend"></div>
+              </div>
+              <div class="chart">
+                <canvas id="doughnatChart" style="height:250px"></canvas>
+              </div>
+            </div>
+            </div>
+          <!-- /.box -->  
+        </div>
+
+        <div class="col-md-6">
+          <!-- PIE CHART -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Analisis Data Umur Pelanggan</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <!--
+              <div class="col-md-3">
+                <div id="umurLegend"></div>
+              </div>
+            -->
+              <div class="chart">
+                <canvas id="umurChart" style="height:250px"></canvas>
+              </div>
+            </div>
+            </div>
+          <!-- /.box -->  
+        </div>
+
+
+        <script type="text/javascript" src="<?php echo $base_url;?>assets/jquery.js"></script>
+        <script type="text/javascript" src="<?php echo $base_url;?>assets/Chart.js"></script>
+
+        <script type="text/javascript">
+              $(document).ready(function(){
+                  // pie chart data kota pelanggan
+
+                  var data4 = [ <?php
+                                    $i = 0;
+                                    $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                                    foreach($customerKota as $c){
+                                      {
+                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+                                        $i++;
+                                        $dataPie = '{
+                                                      value: '.$c->Jumlah.',
+                                                      color:"'.$color.'",
+                                                      highlight: "'.$color.'",
+                                                      label: "'.$c->Kota.'"
+                                                    },';
+                                        echo $dataPie;
+                                      }
+                                    }
+                                 ?>
+                                  {
+                                      value: 0,
+                                      color: "",
+                                      highlight: "",
+                                      label: ""
+                                  }
+                              ]
+                // doughnat
+                var ctx4 = document.getElementById('doughnatChart').getContext("2d");
+                var chart4 = new Chart(ctx4).Doughnut(data4);
+
+                // ===================================================
+                  // pie chart data umur pelanggan
+                  var data6 = [ <?php
+                                    $i = 0;
+                                    $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                                    foreach($groupUmur as $c){
+                                      {
+                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+                                        $i++;
+                                        $dataPie = '{
+                                                      value: '.$c->Jumlah.',
+                                                      color:"'.$color.'",
+                                                      highlight: "'.$color.'",
+                                                      label: "Umur '.$c->Umur.'"
+                                                    },';
+                                        echo $dataPie;
+                                      }
+                                    }
+                                 ?>
+                                  {
+                                      value: 0,
+                                      color: "",
+                                      highlight: "",
+                                      label: ""
+                                  }
+                              ]
+                
+                var ctx6 = document.getElementById('umurChart').getContext("2d");
+                var chart6 = new Chart(ctx6).Pie(data6, {
+                  //String - A legend template
+                  legendTemplate : "<% for (var i=0; i<segments.length; i++){%><span style=\"background-color:<%=segments[i].fillColor%>\"><%if(segments[i].label){%><%=segments[i].label%><%}%></span><%}%>"
+                });
+                document.getElementById("umurLegend").innerHTML = chart6.generateLegend();
+
+              });
+              
+        </script>
+
         <!-- /.col -->
         </div>
 

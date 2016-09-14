@@ -46,7 +46,7 @@
             <span class="info-box-icon bg-red"><i class="fa fa-send"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">Jumlah Collect</span>
-              <span class="info-box-text">Point</span>
+              <span class="info-box-text">Point Bulan Sekarang</span>
               <span class="info-box-number"></span>
             </div>
             <!-- /.info-box-content -->
@@ -60,7 +60,7 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Jumlah Radeem </span>
-              <span class="info-box-text">Point </span>
+              <span class="info-box-text">Point Bulan Sekarang </span>
               <span class="info-box-number"></span>
             </div>
             <!-- /.info-box-content -->
